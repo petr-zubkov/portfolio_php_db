@@ -1,0 +1,25 @@
+# Включение PHP
+AddType application/x-httpd-php .php
+
+# Установка кодировки
+AddDefaultCharset UTF-8
+
+# Чистые URL (опционально)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+
+# Запрет доступа к файлам данных
+<FilesMatch "\.(json|sql)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Запрет доступа к папке uploads
+<Files "uploads">
+    Order allow,deny
+    Deny from all
+</Files>
