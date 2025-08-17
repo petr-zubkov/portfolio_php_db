@@ -1,0 +1,110 @@
+.admin-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.admin-sidebar {
+    width: 250px;
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px 0;
+}
+
+.sidebar-header {
+    padding: 0 20px 30px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 20px;
+}
+
+.sidebar-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.admin-sidebar .nav-link {
+    color: rgba(255,255,255,0.8);
+    padding: 15px 20px;
+    transition: all 0.3s ease;
+}
+
+.admin-sidebar .nav-link:hover,
+.admin-sidebar .nav-link.active {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.admin-sidebar .nav-link i {
+    margin-right: 10px;
+    width: 20px;
+}
+
+.admin-main {
+    flex: 1;
+    padding: 30px;
+    background-color: #f8f9fa;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.admin-form {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.skill-admin-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.skill-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.skill-header i {
+    margin-right: 15px;
+    color: #3498db;
+}
+
+.skill-actions {
+    margin-top: 15px;
+    text-align: right;
+}
+
+.table {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.table img {
+    border-radius: 5px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .admin-container {
+        flex-direction: column;
+    }
+    
+    .admin-sidebar {
+        width: 100%;
+        order: 2;
+    }
+    
+    .admin-main {
+        order: 1;
+    }
+}
