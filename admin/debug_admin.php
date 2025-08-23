@@ -41,7 +41,7 @@ $settings = $settings_result ? $settings_result->fetch_assoc() : [
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Админ-панель</title>
+    <title>Админ-панель (Debug)</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="../assets/css/admin.css" rel="stylesheet">
@@ -229,7 +229,7 @@ $settings = $settings_result ? $settings_result->fetch_assoc() : [
         </main>
     </div>
 
-    <!-- Модальные окна (оставляем как в debug версии) -->
+    <!-- Модальное окно добавления проекта -->
     <div class="modal fade" id="addProjectModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -262,6 +262,7 @@ $settings = $settings_result ? $settings_result->fetch_assoc() : [
         </div>
     </div>
 
+    <!-- Модальное окно добавления навыка -->
     <div class="modal fade" id="addSkillModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -368,6 +369,7 @@ $settings = $settings_result ? $settings_result->fetch_assoc() : [
     document.addEventListener('DOMContentLoaded', function() {
         console.log('DOM загружен');
         
+        // Обработчики для вкладок
         const tabLinks = document.querySelectorAll('.admin-sidebar .nav-link[data-tab]');
         tabLinks.forEach(link => {
             console.log('Добавляем обработчик для вкладки:', link.getAttribute('data-tab'));
@@ -375,11 +377,14 @@ $settings = $settings_result ? $settings_result->fetch_assoc() : [
                 e.preventDefault();
                 console.log('Клик по вкладке:', this.getAttribute('data-tab'));
                 
+                // Удаляем активный класс у всех ссылок и вкладок
                 document.querySelectorAll('.admin-sidebar .nav-link').forEach(l => l.classList.remove('active'));
                 document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
                 
+                // Добавляем активный класс текущей ссылке
                 this.classList.add('active');
                 
+                // Показываем соответствующую вкладку
                 const tabId = this.getAttribute('data-tab') + '-tab';
                 const tabElement = document.getElementById(tabId);
                 if (tabElement) {
@@ -404,26 +409,7 @@ $settings = $settings_result ? $settings_result->fetch_assoc() : [
     function addProject(event) {
         event.preventDefault();
         console.log('Добавляем проект');
-        
-        const form = event.target;
-        const formData = new FormData(form);
-        
-        fetch('save_project.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showNotification('Проект успешно добавлен!', 'success');
-                setTimeout(() => location.reload(), 1000);
-            } else {
-                showNotification('Ошибка: ' + data.message, 'error');
-            }
-        })
-        .catch(error => {
-            showNotification('Ошибка запроса: ' + error.message, 'error');
-        });
+        showNotification('Функция добавления проекта в разработке', 'info');
     }
 
     function editProject(id) {
@@ -434,26 +420,7 @@ $settings = $settings_result ? $settings_result->fetch_assoc() : [
     function deleteProject(id) {
         console.log('Удаляем проект:', id);
         if (confirm('Вы уверены, что хотите удалить этот проект?')) {
-            const formData = new FormData();
-            formData.append('action', 'delete');
-            formData.append('id', id);
-            
-            fetch('save_project.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showNotification('Проект удален!', 'success');
-                    setTimeout(() => location.reload(), 1000);
-                } else {
-                    showNotification('Ошибка удаления', 'error');
-                }
-            })
-            .catch(error => {
-                showNotification('Ошибка запроса: ' + error.message, 'error');
-            });
+            showNotification('Функция удаления проекта в разработке', 'info');
         }
     }
 
@@ -467,26 +434,7 @@ $settings = $settings_result ? $settings_result->fetch_assoc() : [
     function addSkill(event) {
         event.preventDefault();
         console.log('Добавляем навык');
-        
-        const form = event.target;
-        const formData = new FormData(form);
-        
-        fetch('save_skills.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showNotification('Навык успешно добавлен!', 'success');
-                setTimeout(() => location.reload(), 1000);
-            } else {
-                showNotification('Ошибка: ' + data.message, 'error');
-            }
-        })
-        .catch(error => {
-            showNotification('Ошибка запроса: ' + error.message, 'error');
-        });
+        showNotification('Функция добавления навыка в разработке', 'info');
     }
 
     function editSkill(id) {
@@ -497,26 +445,7 @@ $settings = $settings_result ? $settings_result->fetch_assoc() : [
     function deleteSkill(id) {
         console.log('Удаляем навык:', id);
         if (confirm('Вы уверены, что хотите удалить этот навык?')) {
-            const formData = new FormData();
-            formData.append('action', 'delete');
-            formData.append('id', id);
-            
-            fetch('save_skills.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    showNotification('Навык удален!', 'success');
-                    setTimeout(() => location.reload(), 1000);
-                } else {
-                    showNotification('Ошибка удаления', 'error');
-                }
-            })
-            .catch(error => {
-                showNotification('Ошибка запроса: ' + error.message, 'error');
-            });
+            showNotification('Функция удаления навыка в разработке', 'info');
         }
     }
 
@@ -524,25 +453,7 @@ $settings = $settings_result ? $settings_result->fetch_assoc() : [
     function saveContact(event) {
         event.preventDefault();
         console.log('Сохраняем контакты');
-        
-        const form = event.target;
-        const formData = new FormData(form);
-        
-        fetch('save_contact.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showNotification('Контакты успешно сохранены!', 'success');
-            } else {
-                showNotification('Ошибка: ' + data.message, 'error');
-            }
-        })
-        .catch(error => {
-            showNotification('Ошибка запроса: ' + error.message, 'error');
-        });
+        showNotification('Функция сохранения контактов в разработке', 'info');
     }
 
     // Функция сохранения настроек
@@ -555,6 +466,7 @@ $settings = $settings_result ? $settings_result->fetch_assoc() : [
         const submitButton = form.querySelector('button[type="submit"]');
         const originalText = submitButton.innerHTML;
         
+        // Показываем индикатор загрузки
         submitButton.disabled = true;
         submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Сохранение...';
         

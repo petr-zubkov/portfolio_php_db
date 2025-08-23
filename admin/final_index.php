@@ -215,11 +215,11 @@ $settings = $settings_result ? $settings_result->fetch_assoc() : [
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Проектов выполнено</label>
-                                <input type="number" class="form-control" name="projects_count" value="<?php echo htmlspecialchars($settings['projects_count']); ?>">
+                                <input type="number" class="form-control" name="projects_count" value="<?php echo htmlspecialchars($settings['projects_count']; ?>">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Клиентов</label>
-                                <input type="number" class="form-control" name="clients_count" value="<?php echo htmlspecialchars($settings['clients_count']); ?>">
+                                <input type="number" class="form-control" name="clients_count" value="<?php echo htmlspecialchars($settings['clients_count']; ?>">
                             </div>
                         </div>
                     </div>

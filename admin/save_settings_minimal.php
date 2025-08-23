@@ -26,48 +26,26 @@ try {
     
     // Получаем базовые данные
     $id = isset($_POST['id']) ? (int)$_POST['id'] : 1;
-    $site_title = isset($_POST['site_title']) ? trim($_POST['site_title']) : '';
-    $hero_title = isset($_POST['hero_title']) ? trim($_POST['hero_title']) : '';
-    $hero_subtitle = isset($_POST['hero_subtitle']) ? trim($_POST['hero_subtitle']) : '';
-    $experience_years = isset($_POST['experience_years']) ? (int)$_POST['experience_years'] : 0;
-    $projects_count = isset($_POST['projects_count']) ? (int)$_POST['projects_count'] : 0;
-    $clients_count = isset($_POST['clients_count']) ? (int)$_POST['clients_count'] : 0;
+    $site_title = isset($_POST['site_title']) ? $_POST['site_title'] : '';
     
-    // Проверяем обязательные поля
     if (empty($site_title)) {
         throw new Exception('Site title is required');
     }
     
     // Проверяем подключение
-    if (!$conn || $conn->connect_error) {
+    if (!$conn) {
         throw new Exception('Database connection failed');
     }
     
-    // Обновляем данные
-    $sql = "UPDATE settings SET 
-        site_title = ?, 
-        hero_title = ?, 
-        hero_subtitle = ?,
-        experience_years = ?,
-        projects_count = ?,
-        clients_count = ?
-        WHERE id = ?";
-    
+    // Самый простой UPDATE
+    $sql = "UPDATE settings SET site_title = ? WHERE id = ?";
     $stmt = $conn->prepare($sql);
     
     if (!$stmt) {
         throw new Exception('Prepare failed: ' . $conn->error);
     }
     
-    $stmt->bind_param("sssiiii", 
-        $site_title, 
-        $hero_title, 
-        $hero_subtitle,
-        $experience_years,
-        $projects_count,
-        $clients_count,
-        $id
-    );
+    $stmt->bind_param('si', $site_title, $id);
     
     if (!$stmt->execute()) {
         throw new Exception('Execute failed: ' . $stmt->error);
@@ -80,12 +58,12 @@ try {
     ob_end_clean();
     echo json_encode([
         'success' => true,
-        'message' => 'Настройки успешно сохранены',
-        'affected_rows' => $affected
+        'message' => 'Settings saved',
+        'affected' => $affected
     ]);
     
 } catch (Exception $e) {
-    // Очищаем буфер и выводим ошибку
+    // В случае ошибки - очищаем буфер и выводим ошибку
     ob_end_clean();
     echo json_encode([
         'success' => false,

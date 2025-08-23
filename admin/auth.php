@@ -1,16 +1,13 @@
 <?php
 session_start();
-// Устанавливаем переменную сессии
-$_SESSION['admin'] = true;
-$_SESSION['last_activity'] = time(); // Для отслеживания активности
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
     
-    // Простая аутентификация (в реальном проекте используйте более безопасные методы)
     if ($username === 'admin' && $password === 'password123') {
         $_SESSION['admin'] = true;
+        $_SESSION['login_time'] = time();
         header('Location: index.php');
         exit;
     } else {
@@ -50,6 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-size: 60px;
             color: #667eea;
             margin-bottom: 15px;
+        }
+        .alert {
+            margin-bottom: 20px;
         }
     </style>
 </head>
