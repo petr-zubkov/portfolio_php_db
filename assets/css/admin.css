@@ -108,3 +108,15 @@
         order: 1;
     }
 }
+
+/* Стили для уведомлений уже включены в JavaScript-код */
+/* Но можно добавить дополнительные стили для кнопки сохранения */
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.form-control-color {
+    height: 38px;
+    padding: 0.25rem;
+}
