@@ -1,0 +1,304 @@
+[2025-08-21 19:27:57] === Начало обработки запроса на сохранение настроек ===
+[2025-08-21 19:27:57] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0412\u0435\u0440\u0441\u0442\u0430\u043b\u044c\u0449\u0438\u043a \u043a\u043d\u0438\u0433","hero_subtitle":"\u041f\u0440\u043e\u0444\u0435\u0441\u0441\u0438\u043e\u043d\u0430\u043b\u044c\u043d\u0430\u044f \u0432\u0435\u0440\u0441\u0442\u043a\u0430 \u043f\u0435\u0447\u0430\u0442\u043d\u044b\u0445 \u0438 \u044d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u043d\u044b\u0445 \u0438\u0437\u0434\u0430\u043d\u0438\u0439","avatar":"assets\/img\/placeholder.jpg","about_text":"","primary_color":"#2c3e50","secondary_color":"#3498db","accent_color":"#e74c3c","text_color":"#333333","bg_color":"#ffffff","font_family":"Roboto","bg_image":"","experience_years":"5","projects_count":"100","clients_count":"50"}
+[2025-08-21 19:27:57] Извлеченные данные:
+[2025-08-21 19:27:57] ID: 1
+[2025-08-21 19:27:57] Site Title: Портфолио
+[2025-08-21 19:27:57] Hero Title: Верстальщик книг
+[2025-08-21 19:27:57] Подключение к БД успешно установлено
+[2025-08-21 19:27:57] Таблица settings существует
+[2025-08-21 19:27:57] Структура таблицы settings:
+[2025-08-21 19:27:57]   id - int(11)
+[2025-08-21 19:27:57]   site_title - varchar(255)
+[2025-08-21 19:27:57]   hero_title - varchar(255)
+[2025-08-21 19:27:57]   hero_subtitle - text
+[2025-08-21 19:27:57]   avatar - varchar(255)
+[2025-08-21 19:27:57]   about_text - text
+[2025-08-21 19:27:57]   primary_color - varchar(7)
+[2025-08-21 19:27:57]   secondary_color - varchar(7)
+[2025-08-21 19:27:57]   accent_color - varchar(7)
+[2025-08-21 19:27:57]   text_color - varchar(7)
+[2025-08-21 19:27:57]   bg_color - varchar(7)
+[2025-08-21 19:27:57]   font_family - varchar(50)
+[2025-08-21 19:27:57]   bg_image - varchar(255)
+[2025-08-21 19:27:57]   experience_years - int(11)
+[2025-08-21 19:27:57]   projects_count - int(11)
+[2025-08-21 19:27:57]   clients_count - int(11)
+[2025-08-21 19:27:57] Запись с ID=1 существует
+[2025-08-21 19:27:57] Обновляем существующую запись
+[2025-08-21 19:27:57] SQL запрос: UPDATE settings SET 
+        site_title = ?, 
+        hero_title = ?, 
+        hero_subtitle = ?, 
+        avatar = ?, 
+        about_text = ?, 
+        primary_color = ?, 
+        secondary_color = ?, 
+        accent_color = ?, 
+        text_color = ?, 
+        bg_color = ?, 
+        font_family = ?, 
+        bg_image = ?, 
+        experience_years = ?, 
+        projects_count = ?, 
+        clients_count = ? 
+        WHERE id = ?
+[2025-08-21 19:27:58] === Начало обработки запроса на сохранение настроек ===
+[2025-08-21 19:27:58] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0412\u0435\u0440\u0441\u0442\u0430\u043b\u044c\u0449\u0438\u043a \u043a\u043d\u0438\u0433","hero_subtitle":"\u041f\u0440\u043e\u0444\u0435\u0441\u0441\u0438\u043e\u043d\u0430\u043b\u044c\u043d\u0430\u044f \u0432\u0435\u0440\u0441\u0442\u043a\u0430 \u043f\u0435\u0447\u0430\u0442\u043d\u044b\u0445 \u0438 \u044d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u043d\u044b\u0445 \u0438\u0437\u0434\u0430\u043d\u0438\u0439","avatar":"assets\/img\/placeholder.jpg","about_text":"","primary_color":"#2c3e50","secondary_color":"#3498db","accent_color":"#e74c3c","text_color":"#333333","bg_color":"#ffffff","font_family":"Roboto","bg_image":"","experience_years":"5","projects_count":"100","clients_count":"50"}
+[2025-08-21 19:27:58] Извлеченные данные:
+[2025-08-21 19:27:58] ID: 1
+[2025-08-21 19:27:58] Site Title: Портфолио
+[2025-08-21 19:27:58] Hero Title: Верстальщик книг
+[2025-08-21 19:27:58] Подключение к БД успешно установлено
+[2025-08-21 19:27:58] Таблица settings существует
+[2025-08-21 19:27:58] Структура таблицы settings:
+[2025-08-21 19:27:58]   id - int(11)
+[2025-08-21 19:27:58]   site_title - varchar(255)
+[2025-08-21 19:27:58]   hero_title - varchar(255)
+[2025-08-21 19:27:58]   hero_subtitle - text
+[2025-08-21 19:27:58]   avatar - varchar(255)
+[2025-08-21 19:27:58]   about_text - text
+[2025-08-21 19:27:58]   primary_color - varchar(7)
+[2025-08-21 19:27:58]   secondary_color - varchar(7)
+[2025-08-21 19:27:58]   accent_color - varchar(7)
+[2025-08-21 19:27:58]   text_color - varchar(7)
+[2025-08-21 19:27:58]   bg_color - varchar(7)
+[2025-08-21 19:27:58]   font_family - varchar(50)
+[2025-08-21 19:27:58]   bg_image - varchar(255)
+[2025-08-21 19:27:58]   experience_years - int(11)
+[2025-08-21 19:27:58]   projects_count - int(11)
+[2025-08-21 19:27:58]   clients_count - int(11)
+[2025-08-21 19:27:58] Запись с ID=1 существует
+[2025-08-21 19:27:58] Обновляем существующую запись
+[2025-08-21 19:27:58] SQL запрос: UPDATE settings SET 
+        site_title = ?, 
+        hero_title = ?, 
+        hero_subtitle = ?, 
+        avatar = ?, 
+        about_text = ?, 
+        primary_color = ?, 
+        secondary_color = ?, 
+        accent_color = ?, 
+        text_color = ?, 
+        bg_color = ?, 
+        font_family = ?, 
+        bg_image = ?, 
+        experience_years = ?, 
+        projects_count = ?, 
+        clients_count = ? 
+        WHERE id = ?
+[2025-08-21 19:28:08] === Начало обработки запроса на сохранение настроек ===
+[2025-08-21 19:28:08] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0412\u0435\u0440\u0441\u0442\u0430\u043b\u044c\u0449\u0438\u043a \u043a\u043d\u0438\u0433","hero_subtitle":"\u041f\u0440\u043e\u0444\u0435\u0441\u0441\u0438\u043e\u043d\u0430\u043b\u044c\u043d\u0430\u044f \u0432\u0435\u0440\u0441\u0442\u043a\u0430 \u043f\u0435\u0447\u0430\u0442\u043d\u044b\u0445 \u0438 \u044d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u043d\u044b\u0445 \u0438\u0437\u0434\u0430\u043d\u0438\u0439","avatar":"assets\/img\/placeholder.jpg","about_text":"","primary_color":"#2c3e50","secondary_color":"#3498db","accent_color":"#e74c3c","text_color":"#333333","bg_color":"#ffffff","font_family":"Roboto","bg_image":"","experience_years":"5","projects_count":"100","clients_count":"50"}
+[2025-08-21 19:28:08] Извлеченные данные:
+[2025-08-21 19:28:08] ID: 1
+[2025-08-21 19:28:08] Site Title: Портфолио
+[2025-08-21 19:28:08] Hero Title: Верстальщик книг
+[2025-08-21 19:28:08] Подключение к БД успешно установлено
+[2025-08-21 19:28:08] Таблица settings существует
+[2025-08-21 19:28:08] Структура таблицы settings:
+[2025-08-21 19:28:08]   id - int(11)
+[2025-08-21 19:28:08]   site_title - varchar(255)
+[2025-08-21 19:28:08]   hero_title - varchar(255)
+[2025-08-21 19:28:08]   hero_subtitle - text
+[2025-08-21 19:28:08]   avatar - varchar(255)
+[2025-08-21 19:28:08]   about_text - text
+[2025-08-21 19:28:08]   primary_color - varchar(7)
+[2025-08-21 19:28:08]   secondary_color - varchar(7)
+[2025-08-21 19:28:08]   accent_color - varchar(7)
+[2025-08-21 19:28:08]   text_color - varchar(7)
+[2025-08-21 19:28:08]   bg_color - varchar(7)
+[2025-08-21 19:28:08]   font_family - varchar(50)
+[2025-08-21 19:28:08]   bg_image - varchar(255)
+[2025-08-21 19:28:08]   experience_years - int(11)
+[2025-08-21 19:28:08]   projects_count - int(11)
+[2025-08-21 19:28:08]   clients_count - int(11)
+[2025-08-21 19:28:08] Запись с ID=1 существует
+[2025-08-21 19:28:08] Обновляем существующую запись
+[2025-08-21 19:28:08] SQL запрос: UPDATE settings SET 
+        site_title = ?, 
+        hero_title = ?, 
+        hero_subtitle = ?, 
+        avatar = ?, 
+        about_text = ?, 
+        primary_color = ?, 
+        secondary_color = ?, 
+        accent_color = ?, 
+        text_color = ?, 
+        bg_color = ?, 
+        font_family = ?, 
+        bg_image = ?, 
+        experience_years = ?, 
+        projects_count = ?, 
+        clients_count = ? 
+        WHERE id = ?
+[2025-08-21 19:28:10] === Начало обработки запроса на сохранение настроек ===
+[2025-08-21 19:28:10] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0412\u0435\u0440\u0441\u0442\u0430\u043b\u044c\u0449\u0438\u043a \u043a\u043d\u0438\u0433","hero_subtitle":"\u041f\u0440\u043e\u0444\u0435\u0441\u0441\u0438\u043e\u043d\u0430\u043b\u044c\u043d\u0430\u044f \u0432\u0435\u0440\u0441\u0442\u043a\u0430 \u043f\u0435\u0447\u0430\u0442\u043d\u044b\u0445 \u0438 \u044d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u043d\u044b\u0445 \u0438\u0437\u0434\u0430\u043d\u0438\u0439","avatar":"assets\/img\/placeholder.jpg","about_text":"","primary_color":"#2c3e50","secondary_color":"#3498db","accent_color":"#e74c3c","text_color":"#333333","bg_color":"#ffffff","font_family":"Roboto","bg_image":"","experience_years":"5","projects_count":"100","clients_count":"50"}
+[2025-08-21 19:28:10] Извлеченные данные:
+[2025-08-21 19:28:10] ID: 1
+[2025-08-21 19:28:10] Site Title: Портфолио
+[2025-08-21 19:28:10] Hero Title: Верстальщик книг
+[2025-08-21 19:28:10] Подключение к БД успешно установлено
+[2025-08-21 19:28:10] Таблица settings существует
+[2025-08-21 19:28:10] Структура таблицы settings:
+[2025-08-21 19:28:10]   id - int(11)
+[2025-08-21 19:28:10]   site_title - varchar(255)
+[2025-08-21 19:28:10]   hero_title - varchar(255)
+[2025-08-21 19:28:10]   hero_subtitle - text
+[2025-08-21 19:28:10]   avatar - varchar(255)
+[2025-08-21 19:28:10]   about_text - text
+[2025-08-21 19:28:10]   primary_color - varchar(7)
+[2025-08-21 19:28:10]   secondary_color - varchar(7)
+[2025-08-21 19:28:10]   accent_color - varchar(7)
+[2025-08-21 19:28:10]   text_color - varchar(7)
+[2025-08-21 19:28:10]   bg_color - varchar(7)
+[2025-08-21 19:28:10]   font_family - varchar(50)
+[2025-08-21 19:28:10]   bg_image - varchar(255)
+[2025-08-21 19:28:10]   experience_years - int(11)
+[2025-08-21 19:28:10]   projects_count - int(11)
+[2025-08-21 19:28:10]   clients_count - int(11)
+[2025-08-21 19:28:10] Запись с ID=1 существует
+[2025-08-21 19:28:10] Обновляем существующую запись
+[2025-08-21 19:28:10] SQL запрос: UPDATE settings SET 
+        site_title = ?, 
+        hero_title = ?, 
+        hero_subtitle = ?, 
+        avatar = ?, 
+        about_text = ?, 
+        primary_color = ?, 
+        secondary_color = ?, 
+        accent_color = ?, 
+        text_color = ?, 
+        bg_color = ?, 
+        font_family = ?, 
+        bg_image = ?, 
+        experience_years = ?, 
+        projects_count = ?, 
+        clients_count = ? 
+        WHERE id = ?
+[2025-08-23 14:49:34] === Начало обработки запроса на сохранение настроек ===
+[2025-08-23 14:49:34] ОШИБКА: Метод не разрешен: GET
+[2025-08-23 15:26:31] === Начало обработки запроса на сохранение настроек ===
+[2025-08-23 15:26:31] Извлеченные данные:
+[2025-08-23 15:26:31] ID: 1
+[2025-08-23 15:26:31] Site Title: Тестовый сайт
+[2025-08-23 15:26:31] Hero Title: Тестовый герой
+[2025-08-23 15:26:31] Experience Years: 5 (type: integer)
+[2025-08-23 15:26:31] Projects Count: 100 (type: integer)
+[2025-08-23 15:26:31] Clients Count: 50 (type: integer)
+[2025-08-23 15:26:31] Подключение к БД успешно установлено
+[2025-08-23 15:26:31] Таблица settings существует
+[2025-08-23 15:26:31] Запись с ID=1 существует
+[2025-08-23 15:26:31] Обновляем существующую запись
+[2025-08-23 15:26:31] Пробуем простой UPDATE запрос...
+[2025-08-23 15:26:31] Простой запрос выполнен успешно, затронуто строк: 1
+[2025-08-23 15:26:31] Выполняем полный UPDATE запрос...
+[2025-08-23 15:26:31] SQL запрос: UPDATE settings SET              site_title = ?, hero_title = ?, hero_subtitle = ?, avatar = ?, about_text = ?,             primary_color = ?, secondary_color = ?, accent_color = ?, text_color = ?, bg_color = ?,             font_family = ?, bg_image = ?, experience_years = ?, projects_count = ?, clients_count = ?             WHERE id = ?
+[2025-08-23 15:26:31] Запрос подготовлен успешно, привязываем параметры...
+[2025-08-23 15:26:31] Приведенные типы: experience_years=5, projects_count=100, clients_count=50
+[2025-08-23 16:47:44] === Начало обработки запроса на сохранение настроек ===
+[2025-08-23 16:47:44] Извлеченные данные:
+[2025-08-23 16:47:44] ID: 1
+[2025-08-23 16:47:44] Site Title: Финальный тест
+[2025-08-23 16:47:44] Hero Title: Тестовый герой
+[2025-08-23 16:47:44] Experience Years: 5 (type: integer)
+[2025-08-23 16:47:44] Projects Count: 100 (type: integer)
+[2025-08-23 16:47:44] Clients Count: 50 (type: integer)
+[2025-08-23 16:47:44] Подключение к БД успешно установлено
+[2025-08-23 16:47:44] Таблица settings существует
+[2025-08-23 16:47:44] Запись с ID=1 существует
+[2025-08-23 16:47:44] Обновляем существующую запись
+[2025-08-23 16:47:44] Пробуем простой UPDATE запрос...
+[2025-08-23 16:47:44] Простой запрос выполнен успешно, затронуто строк: 0
+[2025-08-23 16:47:44] Выполняем полный UPDATE запрос...
+[2025-08-23 16:47:44] SQL запрос: UPDATE settings SET              site_title = ?, hero_title = ?, hero_subtitle = ?, avatar = ?, about_text = ?,             primary_color = ?, secondary_color = ?, accent_color = ?, text_color = ?, bg_color = ?,             font_family = ?, bg_image = ?, experience_years = ?, projects_count = ?, clients_count = ?             WHERE id = ?
+[2025-08-23 16:47:44] Запрос подготовлен успешно, привязываем параметры...
+[2025-08-23 16:47:44] Приведенные типы: experience_years=5, projects_count=100, clients_count=50
+[2025-08-23 16:48:46] === Начало обработки запроса на сохранение настроек ===
+[2025-08-23 16:48:46] Извлеченные данные:
+[2025-08-23 16:48:46] ID: 1
+[2025-08-23 16:48:46] Site Title: Финальный тест
+[2025-08-23 16:48:46] Hero Title: Тестовый герой
+[2025-08-23 16:48:46] Experience Years: 5 (type: integer)
+[2025-08-23 16:48:46] Projects Count: 100 (type: integer)
+[2025-08-23 16:48:46] Clients Count: 50 (type: integer)
+[2025-08-23 16:48:46] Подключение к БД успешно установлено
+[2025-08-23 16:48:46] Таблица settings существует
+[2025-08-23 16:48:46] Запись с ID=1 существует
+[2025-08-23 16:48:46] Обновляем существующую запись
+[2025-08-23 16:48:46] Пробуем простой UPDATE запрос...
+[2025-08-23 16:48:46] Простой запрос выполнен успешно, затронуто строк: 0
+[2025-08-23 16:48:46] Выполняем полный UPDATE запрос...
+[2025-08-23 16:48:46] SQL запрос: UPDATE settings SET              site_title = ?, hero_title = ?, hero_subtitle = ?, avatar = ?, about_text = ?,             primary_color = ?, secondary_color = ?, accent_color = ?, text_color = ?, bg_color = ?,             font_family = ?, bg_image = ?, experience_years = ?, projects_count = ?, clients_count = ?             WHERE id = ?
+[2025-08-23 16:48:46] Запрос подготовлен успешно, привязываем параметры...
+[2025-08-23 16:48:46] Приведенные типы: experience_years=5, projects_count=100, clients_count=50
+[2025-08-23 16:49:39] === Начало обработки запроса на сохранение настроек ===
+[2025-08-23 16:49:39] Извлеченные данные:
+[2025-08-23 16:49:39] ID: 1
+[2025-08-23 16:49:39] Site Title: Финальный тест
+[2025-08-23 16:49:39] Hero Title: Тестовый герой
+[2025-08-23 16:49:39] Experience Years: 5 (type: integer)
+[2025-08-23 16:49:39] Projects Count: 100 (type: integer)
+[2025-08-23 16:49:39] Clients Count: 50 (type: integer)
+[2025-08-23 16:49:39] Подключение к БД успешно установлено
+[2025-08-23 16:49:39] Таблица settings существует
+[2025-08-23 16:49:39] Запись с ID=1 существует
+[2025-08-23 16:49:39] Обновляем существующую запись
+[2025-08-23 16:49:39] Пробуем простой UPDATE запрос...
+[2025-08-23 16:49:39] Простой запрос выполнен успешно, затронуто строк: 0
+[2025-08-23 16:49:39] Выполняем полный UPDATE запрос...
+[2025-08-23 16:49:39] SQL запрос: UPDATE settings SET              site_title = ?, hero_title = ?, hero_subtitle = ?, avatar = ?, about_text = ?,             primary_color = ?, secondary_color = ?, accent_color = ?, text_color = ?, bg_color = ?,             font_family = ?, bg_image = ?, experience_years = ?, projects_count = ?, clients_count = ?             WHERE id = ?
+[2025-08-23 16:49:39] Запрос подготовлен успешно, привязываем параметры...
+[2025-08-23 16:49:39] Приведенные типы: experience_years=5, projects_count=100, clients_count=50
+[2025-08-23 16:49:40] === Начало обработки запроса на сохранение настроек ===
+[2025-08-23 16:49:40] Извлеченные данные:
+[2025-08-23 16:49:40] ID: 1
+[2025-08-23 16:49:40] Site Title: Финальный тест
+[2025-08-23 16:49:40] Hero Title: Тестовый герой
+[2025-08-23 16:49:40] Experience Years: 5 (type: integer)
+[2025-08-23 16:49:40] Projects Count: 100 (type: integer)
+[2025-08-23 16:49:40] Clients Count: 50 (type: integer)
+[2025-08-23 16:49:40] Подключение к БД успешно установлено
+[2025-08-23 16:49:40] Таблица settings существует
+[2025-08-23 16:49:40] Запись с ID=1 существует
+[2025-08-23 16:49:40] Обновляем существующую запись
+[2025-08-23 16:49:40] Пробуем простой UPDATE запрос...
+[2025-08-23 16:49:40] Простой запрос выполнен успешно, затронуто строк: 0
+[2025-08-23 16:49:40] Выполняем полный UPDATE запрос...
+[2025-08-23 16:49:40] SQL запрос: UPDATE settings SET              site_title = ?, hero_title = ?, hero_subtitle = ?, avatar = ?, about_text = ?,             primary_color = ?, secondary_color = ?, accent_color = ?, text_color = ?, bg_color = ?,             font_family = ?, bg_image = ?, experience_years = ?, projects_count = ?, clients_count = ?             WHERE id = ?
+[2025-08-23 16:49:40] Запрос подготовлен успешно, привязываем параметры...
+[2025-08-23 16:49:40] Приведенные типы: experience_years=5, projects_count=100, clients_count=50
+[2025-08-23 16:49:42] === Начало обработки запроса на сохранение настроек ===
+[2025-08-23 16:49:42] Извлеченные данные:
+[2025-08-23 16:49:42] ID: 1
+[2025-08-23 16:49:42] Site Title: Финальный тест
+[2025-08-23 16:49:42] Hero Title: Тестовый герой
+[2025-08-23 16:49:42] Experience Years: 5 (type: integer)
+[2025-08-23 16:49:42] Projects Count: 100 (type: integer)
+[2025-08-23 16:49:42] Clients Count: 50 (type: integer)
+[2025-08-23 16:49:42] Подключение к БД успешно установлено
+[2025-08-23 16:49:42] Таблица settings существует
+[2025-08-23 16:49:42] Запись с ID=1 существует
+[2025-08-23 16:49:42] Обновляем существующую запись
+[2025-08-23 16:49:42] Пробуем простой UPDATE запрос...
+[2025-08-23 16:49:42] Простой запрос выполнен успешно, затронуто строк: 0
+[2025-08-23 16:49:42] Выполняем полный UPDATE запрос...
+[2025-08-23 16:49:42] SQL запрос: UPDATE settings SET              site_title = ?, hero_title = ?, hero_subtitle = ?, avatar = ?, about_text = ?,             primary_color = ?, secondary_color = ?, accent_color = ?, text_color = ?, bg_color = ?,             font_family = ?, bg_image = ?, experience_years = ?, projects_count = ?, clients_count = ?             WHERE id = ?
+[2025-08-23 16:49:42] Запрос подготовлен успешно, привязываем параметры...
+[2025-08-23 16:49:42] Приведенные типы: experience_years=5, projects_count=100, clients_count=50
+[2025-08-23 16:49:45] === Начало обработки запроса на сохранение настроек ===
+[2025-08-23 16:49:45] Извлеченные данные:
+[2025-08-23 16:49:45] ID: 1
+[2025-08-23 16:49:45] Site Title: Финальный тест
+[2025-08-23 16:49:45] Hero Title: Тестовый герой
+[2025-08-23 16:49:45] Experience Years: 5 (type: integer)
+[2025-08-23 16:49:45] Projects Count: 100 (type: integer)
+[2025-08-23 16:49:45] Clients Count: 50 (type: integer)
+[2025-08-23 16:49:45] Подключение к БД успешно установлено
+[2025-08-23 16:49:45] Таблица settings существует
+[2025-08-23 16:49:45] Запись с ID=1 существует
+[2025-08-23 16:49:45] Обновляем существующую запись
+[2025-08-23 16:49:45] Пробуем простой UPDATE запрос...
+[2025-08-23 16:49:45] Простой запрос выполнен успешно, затронуто строк: 0
+[2025-08-23 16:49:45] Выполняем полный UPDATE запрос...
+[2025-08-23 16:49:45] SQL запрос: UPDATE settings SET              site_title = ?, hero_title = ?, hero_subtitle = ?, avatar = ?, about_text = ?,             primary_color = ?, secondary_color = ?, accent_color = ?, text_color = ?, bg_color = ?,             font_family = ?, bg_image = ?, experience_years = ?, projects_count = ?, clients_count = ?             WHERE id = ?
+[2025-08-23 16:49:45] Запрос подготовлен успешно, привязываем параметры...
+[2025-08-23 16:49:45] Приведенные типы: experience_years=5, projects_count=100, clients_count=50
