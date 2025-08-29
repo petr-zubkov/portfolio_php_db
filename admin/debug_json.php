@@ -19,32 +19,27 @@ require_once '../config.php';
 header('Content-Type: application/json');
 
 try {
-    $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-    
-    if ($id <= 0) {
-        throw new Exception('ID навыка не указан');
+    // Простая проверка подключения
+    if (!$conn || $conn->connect_error) {
+        throw new Exception('Database connection failed');
     }
     
-    // Получаем данные навыка
-    $stmt = $conn->prepare("SELECT * FROM skills WHERE id = ?");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    if ($result->num_rows === 0) {
-        throw new Exception('Навык не найден');
-    }
-    
-    $skill = $result->fetch_assoc();
-    
+    // Очищаем буфер
     ob_end_clean();
+    
+    // Возвращаем простой JSON для теста
     echo json_encode([
         'success' => true,
-        'skill' => $skill
+        'message' => 'JSON работает корректно',
+        'timestamp' => date('Y-m-d H:i:s'),
+        'php_version' => phpversion(),
+        'server_software' => $_SERVER['SERVER_SOFTWARE'] ?? 'Unknown'
     ]);
     
 } catch (Exception $e) {
+    // Очищаем буфер
     ob_end_clean();
+    
     echo json_encode([
         'success' => false,
         'message' => $e->getMessage()

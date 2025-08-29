@@ -1,4 +1,5 @@
 <?php
+// Самая простая рабочая версия
 session_start();
 if (!isset($_SESSION['admin'])) {
     header('HTTP/1.1 403 Forbidden');
@@ -10,7 +11,7 @@ require_once '../config.php';
 header('Content-Type: application/json');
 
 try {
-    // Получаем базовые данные
+    // Получаем только те поля, которые есть в форме
     $id = isset($_POST['id']) ? (int)$_POST['id'] : 1;
     $site_title = isset($_POST['site_title']) ? trim($_POST['site_title']) : '';
     $hero_title = isset($_POST['hero_title']) ? trim($_POST['hero_title']) : '';
@@ -20,7 +21,7 @@ try {
     $projects_count = isset($_POST['projects_count']) ? (int)$_POST['projects_count'] : 0;
     $clients_count = isset($_POST['clients_count']) ? (int)$_POST['clients_count'] : 0;
     
-    // Простое обновление без транзакций
+    // Простое обновление
     $sql = "UPDATE settings SET 
         site_title = ?, 
         hero_title = ?, 
@@ -49,7 +50,7 @@ try {
     
     echo json_encode([
         'success' => true,
-        'message' => 'Настройки успешно сохранены (MINIMAL VERSION)',
+        'message' => 'Настройки успешно сохранены (SIMPLE TEST)',
         'affected_rows' => $affected
     ]);
     

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест JSON</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .result {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .success {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        pre {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Тестирование JSON ответов</h1>
+    
+    <button class="test-button" onclick="testDebugJson()">Тест debug_json.php</button>
+    <button class="test-button" onclick="testSaveSettings()">Тест save_settings.php</button>
+    <button class="test-button" onclick="clearResults()">Очистить результаты</button>
+    
+    <div id="results"></div>
+    
+    <script>
+        function addResult(title, content, isError = false) {
+            const resultsDiv = document.getElementById('results');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'result ' + (isError ? 'error' : 'success');
+            resultDiv.innerHTML = '<h3>' + title + '</h3><pre>' + JSON.stringify(content, null, 2) + '</pre>';
+            resultsDiv.appendChild(resultDiv);
+        }
+        
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+        
+        function testDebugJson() {
+            console.log('Тестирование debug_json.php...');
+            
+            fetch('debug_json.php', {
+                method: 'GET',
+                credentials: 'same-origin'
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                console.log('Response headers:', [...response.headers]);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const contentType = response.headers.get('content-type');
+                console.log('Content-Type:', contentType);
+                
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error(`Ожидаемый JSON, получен ${contentType}`);
+                }
+                
+                return response.text().then(text => {
+                    console.log('Response text:', text);
+                    
+                    if (text.trim().startsWith('<')) {
+                        throw new Error(`Сервер вернул HTML вместо JSON: ${text.substring(0, 100)}...`);
+                    }
+                    
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        console.error('JSON parse error:', e);
+                        throw new Error(`Невалидный JSON: ${text.substring(0, 200)}...`);
+                    }
+                });
+            })
+            .then(data => {
+                console.log('Parsed data:', data);
+                addResult('debug_json.php - Успех', data);
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                addResult('debug_json.php - Ошибка', { message: error.message }, true);
+            });
+        }
+        
+        function testSaveSettings() {
+            console.log('Тестирование save_settings.php...');
+            
+            const formData = new FormData();
+            formData.append('id', '1');
+            formData.append('site_title', 'Тестовый сайт');
+            formData.append('hero_title', 'Тестовый герой');
+            formData.append('hero_subtitle', 'Тестовый подзаголовок');
+            formData.append('about_text', 'Тестовый текст обо мне');
+            formData.append('experience_years', '5');
+            formData.append('projects_count', '100');
+            formData.append('clients_count', '50');
+            
+            fetch('save_settings.php', {
+                method: 'POST',
+                body: formData,
+                credentials: 'same-origin'
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                console.log('Response headers:', [...response.headers]);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const contentType = response.headers.get('content-type');
+                console.log('Content-Type:', contentType);
+                
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error(`Ожидаемый JSON, получен ${contentType}`);
+                }
+                
+                return response.text().then(text => {
+                    console.log('Response text:', text);
+                    
+                    if (text.trim().startsWith('<')) {
+                        throw new Error(`Сервер вернул HTML вместо JSON: ${text.substring(0, 100)}...`);
+                    }
+                    
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        console.error('JSON parse error:', e);
+                        throw new Error(`Невалидный JSON: ${text.substring(0, 200)}...`);
+                    }
+                });
+            })
+            .then(data => {
+                console.log('Parsed data:', data);
+                addResult('save_settings.php - Успех', data);
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                addResult('save_settings.php - Ошибка', { message: error.message }, true);
+            });
+        }
+    </script>
+</body>
+</html>

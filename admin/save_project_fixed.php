@@ -19,22 +19,11 @@ require_once '../config.php';
 header('Content-Type: application/json');
 
 try {
-    // Определяем action автоматически, если он не указан
+    // Проверяем наличие action
     $action = $_POST['action'] ?? '';
     
-    // Если action не указан, определяем его по наличию данных
     if (empty($action)) {
-        if (!empty($_POST['id']) && isset($_POST['title'])) {
-            $action = 'edit';
-        } elseif (!empty($_POST['title']) && !empty($_POST['description'])) {
-            $action = 'add';
-        } elseif (!empty($_POST['id'])) {
-            $action = 'delete';
-        }
-    }
-    
-    if (empty($action)) {
-        throw new Exception('Не удалось определить действие. Убедитесь, что все поля заполнены.');
+        throw new Exception('Action не указан');
     }
     
     switch ($action) {
@@ -66,7 +55,7 @@ try {
                 ob_end_clean();
                 echo json_encode(['success' => true, 'message' => 'Проект успешно добавлен']);
             } else {
-                throw new Exception('Заполните все поля: название, описание, ссылка и изображение');
+                throw new Exception('Заполните все поля');
             }
             break;
             
@@ -114,7 +103,7 @@ try {
                 ob_end_clean();
                 echo json_encode(['success' => true, 'message' => 'Проект успешно обновлен']);
             } else {
-                throw new Exception('Заполните все поля: название, описание, ссылка и изображение');
+                throw new Exception('Заполните все поля');
             }
             break;
             

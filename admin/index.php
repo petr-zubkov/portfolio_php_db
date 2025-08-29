@@ -243,6 +243,7 @@ $settings = $settings_result ? $settings_result->fetch_assoc() : [
                 </div>
                 <div class="modal-body">
                     <form id="addProjectForm" onsubmit="addProject(event)" enctype="multipart/form-data">
+                        <input type="hidden" name="action" value="add">
                         <div class="mb-3">
                             <label class="form-label">Название</label>
                             <input type="text" class="form-control" name="title" required>
@@ -260,6 +261,78 @@ $settings = $settings_result ? $settings_result->fetch_assoc() : [
                             <input type="text" class="form-control" name="link" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Добавить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно редактирования проекта -->
+    <div class="modal fade" id="editProjectModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Редактировать проект</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editProjectForm" onsubmit="updateProject(event)" enctype="multipart/form-data">
+                        <input type="hidden" name="action" value="edit">
+                        <input type="hidden" name="id" id="editProjectId">
+                        <div class="mb-3">
+                            <label class="form-label">Название</label>
+                            <input type="text" class="form-control" name="title" id="editProjectTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Описание</label>
+                            <textarea class="form-control" name="description" id="editProjectDescription" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Текущее изображение</label>
+                            <div id="currentImageContainer">
+                                <img id="currentImage" src="" alt="" width="100" style="max-width: 100%;">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Новое изображение (оставьте пустым, чтобы не менять)</label>
+                            <input type="file" class="form-control" name="image" accept="image/*">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Ссылка на проект</label>
+                            <input type="text" class="form-control" name="link" id="editProjectLink" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно редактирования навыка -->
+    <div class="modal fade" id="editSkillModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Редактировать навык</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editSkillForm" onsubmit="updateSkill(event)">
+                        <input type="hidden" name="action" value="edit">
+                        <input type="hidden" name="id" id="editSkillId">
+                        <div class="mb-3">
+                            <label class="form-label">Название</label>
+                            <input type="text" class="form-control" name="name" id="editSkillName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Иконка (Font Awesome класс)</label>
+                            <input type="text" class="form-control" name="icon" id="editSkillIcon" placeholder="fas fa-book" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Уровень (%)</label>
+                            <input type="number" class="form-control" name="level" id="editSkillLevel" min="0" max="100" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
                     </form>
                 </div>
             </div>
@@ -432,7 +505,58 @@ $settings = $settings_result ? $settings_result->fetch_assoc() : [
 
     function editProject(id) {
         console.log('Редактируем проект:', id);
-        showNotification('Функция редактирования проекта в разработке', 'info');
+        
+        // Загружаем данные проекта
+        fetch(`get_project.php?id=${id}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.project) {
+                // Заполняем форму данными
+                document.getElementById('editProjectId').value = data.project.id;
+                document.getElementById('editProjectTitle').value = data.project.title;
+                document.getElementById('editProjectDescription').value = data.project.description;
+                document.getElementById('editProjectLink').value = data.project.link;
+                
+                // Устанавливаем текущее изображение
+                const currentImage = document.getElementById('currentImage');
+                currentImage.src = data.project.image;
+                currentImage.alt = data.project.title;
+                
+                // Показываем модальное окно
+                const modal = new bootstrap.Modal(document.getElementById('editProjectModal'));
+                modal.show();
+            } else {
+                showNotification('Ошибка загрузки данных проекта', 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Ошибка запроса: ' + error.message, 'error');
+        });
+    }
+
+    function updateProject(event) {
+        event.preventDefault();
+        console.log('Обновляем проект');
+        
+        const form = event.target;
+        const formData = new FormData(form);
+        
+        fetch('save_project.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Проект успешно обновлен!', 'success');
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                showNotification('Ошибка: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Ошибка запроса: ' + error.message, 'error');
+        });
     }
 
     function deleteProject(id) {
@@ -495,7 +619,53 @@ $settings = $settings_result ? $settings_result->fetch_assoc() : [
 
     function editSkill(id) {
         console.log('Редактируем навык:', id);
-        showNotification('Функция редактирования навыка в разработке', 'info');
+        
+        // Загружаем данные навыка
+        fetch(`get_skill.php?id=${id}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.skill) {
+                // Заполняем форму данными
+                document.getElementById('editSkillId').value = data.skill.id;
+                document.getElementById('editSkillName').value = data.skill.name;
+                document.getElementById('editSkillIcon').value = data.skill.icon;
+                document.getElementById('editSkillLevel').value = data.skill.level;
+                
+                // Показываем модальное окно
+                const modal = new bootstrap.Modal(document.getElementById('editSkillModal'));
+                modal.show();
+            } else {
+                showNotification('Ошибка загрузки данных навыка', 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Ошибка запроса: ' + error.message, 'error');
+        });
+    }
+
+    function updateSkill(event) {
+        event.preventDefault();
+        console.log('Обновляем навык');
+        
+        const form = event.target;
+        const formData = new FormData(form);
+        
+        fetch('save_skills.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Навык успешно обновлен!', 'success');
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                showNotification('Ошибка: ' + data.message, 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('Ошибка запроса: ' + error.message, 'error');
+        });
     }
 
     function deleteSkill(id) {
