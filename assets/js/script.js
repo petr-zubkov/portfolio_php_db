@@ -28,10 +28,95 @@ window.addEventListener('scroll', function() {
 document.getElementById('contactForm')?.addEventListener('submit', function(e) {
     e.preventDefault();
     
-    // Здесь можно добавить отправку формы на сервер
-    alert('Спасибо за ваше сообщение! Я свяжусь с вами в ближайшее время.');
-    this.reset();
+    const form = this;
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalButtonText = submitButton.textContent;
+    
+    // Получаем данные формы
+    const formData = new FormData(form);
+    const data = {
+        name: formData.get('name') || form.querySelector('input[placeholder="Ваше имя"]').value,
+        email: formData.get('email') || form.querySelector('input[placeholder="Ваш email"]').value,
+        message: formData.get('message') || form.querySelector('textarea[placeholder="Ваше сообщение"]').value
+    };
+    
+    // Валидация
+    if (!data.name.trim()) {
+        showMessage('Пожалуйста, введите ваше имя', 'error');
+        return;
+    }
+    
+    if (!data.email.trim() || !isValidEmail(data.email)) {
+        showMessage('Пожалуйста, введите корректный email', 'error');
+        return;
+    }
+    
+    if (!data.message.trim()) {
+        showMessage('Пожалуйста, введите ваше сообщение', 'error');
+        return;
+    }
+    
+    // Показываем индикатор загрузки
+    submitButton.disabled = true;
+    submitButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Отправка...';
+    
+    // Отправляем данные на сервер
+    fetch('send_message.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            showMessage(result.message, 'success');
+            form.reset();
+        } else {
+            showMessage(result.message, 'error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showMessage('Произошла ошибка при отправке сообщения. Пожалуйста, попробуйте позже.', 'error');
+    })
+    .finally(() => {
+        // Восстанавливаем кнопку
+        submitButton.disabled = false;
+        submitButton.textContent = originalButtonText;
+    });
 });
+
+// Функция для валидации email
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+// Функция для показа сообщений
+function showMessage(message, type) {
+    // Удаляем существующие сообщения
+    const existingAlert = document.querySelector('.form-alert');
+    if (existingAlert) {
+        existingAlert.remove();
+    }
+    
+    // Создаем элемент для сообщения
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} form-alert`;
+    alertDiv.style.marginTop = '15px';
+    alertDiv.textContent = message;
+    
+    // Добавляем сообщение после формы
+    const form = document.getElementById('contactForm');
+    form.parentNode.insertBefore(alertDiv, form.nextSibling);
+    
+    // Автоматически скрываем сообщение через 5 секунд
+    setTimeout(() => {
+        alertDiv.remove();
+    }, 5000);
+}
 
 // Анимация при прокрутке
 const observerOptions = {
