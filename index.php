@@ -17,47 +17,35 @@ $settings = $settings_result->fetch_assoc();
 ?>
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($settings['site_title']); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link
-        href="https://fonts.googleapis.com/css2?family=<?php echo urlencode($settings['font_family']); ?>&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=<?php echo urlencode($settings['font_family']); ?>&display=swap" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
     <style>
-    :root {
-        --primary-color: <?php echo $settings['primary_color'];
-        ?>;
-        --secondary-color: <?php echo $settings['secondary_color'];
-        ?>;
-        --accent-color: <?php echo $settings['accent_color'];
-        ?>;
-        --text-color: <?php echo $settings['text_color'];
-        ?>;
-        --bg-color: <?php echo $settings['bg_color'];
-        ?>;
-        --font-family: '<?php echo $settings['font_family']; ?>', sans-serif;
-    }
-
-    <?php if ( !empty($settings['bg_image'])): ?>body {
-        background-image: url('<?php echo htmlspecialchars($settings['bg_image']); ?>');
-        background-size: cover;
-        background-attachment: fixed;
-    }
-
-    .content-wrapper {
-        background-color: rgba(<?php echo hex2rgb($settings['bg_color']); ?>, 0.95);
-    }
-
-    <?php endif;
-    ?>
+        :root {
+            --primary-color: <?php echo $settings['primary_color']; ?>;
+            --secondary-color: <?php echo $settings['secondary_color']; ?>;
+            --accent-color: <?php echo $settings['accent_color']; ?>;
+            --text-color: <?php echo $settings['text_color']; ?>;
+            --bg-color: <?php echo $settings['bg_color']; ?>;
+            --font-family: '<?php echo $settings['font_family']; ?>', sans-serif;
+        }
+        <?php if (!empty($settings['bg_image'])): ?>
+        body {
+            background-image: url('<?php echo htmlspecialchars($settings['bg_image']); ?>');
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        .content-wrapper {
+            background-color: rgba(<?php echo hex2rgb($settings['bg_color']); ?>, 0.95);
+        }
+        <?php endif; ?>
     </style>
 </head>
-
 <body>
     <div class="content-wrapper">
         <!-- Навигация -->
@@ -130,8 +118,7 @@ $settings = $settings_result->fetch_assoc();
                             <i class="<?php echo htmlspecialchars($skill['icon']); ?> fa-3x mb-3"></i>
                             <h4><?php echo htmlspecialchars($skill['name']); ?></h4>
                             <div class="progress">
-                                <div class="progress-bar" role="progressbar"
-                                    style="width: <?php echo (int)$skill['level']; ?>%">
+                                <div class="progress-bar" role="progressbar" style="width: <?php echo (int)$skill['level']; ?>%">
                                     <?php echo (int)$skill['level']; ?>%
                                 </div>
                             </div>
@@ -150,13 +137,11 @@ $settings = $settings_result->fetch_assoc();
                     <?php foreach ($projects as $project): ?>
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="portfolio-card">
-                            <img src="<?php echo htmlspecialchars($project['image']); ?>"
-                                alt="<?php echo htmlspecialchars($project['title']); ?>" class="img-fluid">
+                            <img src="<?php echo htmlspecialchars($project['image']); ?>" alt="<?php echo htmlspecialchars($project['title']); ?>" class="img-fluid">
                             <div class="portfolio-overlay">
                                 <h4><?php echo htmlspecialchars($project['title']); ?></h4>
                                 <p><?php echo htmlspecialchars($project['description']); ?></p>
-                                <a href="<?php echo htmlspecialchars($project['link']); ?>"
-                                    class="btn btn-outline-light" target="_blank">Подробнее</a>
+                                <a href="<?php echo htmlspecialchars($project['link']); ?>" class="btn btn-outline-light" target="_blank">Подробнее</a>
                             </div>
                         </div>
                     </div>
@@ -176,24 +161,21 @@ $settings = $settings_result->fetch_assoc();
                                 <i class="fas fa-envelope fa-2x"></i>
                                 <div>
                                     <h4>Email</h4>
-                                    <a
-                                        href="mailto:<?php echo htmlspecialchars($contact['email']); ?>"><?php echo htmlspecialchars($contact['email']); ?></a>
+                                    <a href="mailto:<?php echo htmlspecialchars($contact['email']); ?>"><?php echo htmlspecialchars($contact['email']); ?></a>
                                 </div>
                             </div>
                             <div class="contact-item">
                                 <i class="fas fa-phone fa-2x"></i>
                                 <div>
                                     <h4>Телефон</h4>
-                                    <a
-                                        href="tel:<?php echo htmlspecialchars($contact['phone']); ?>"><?php echo htmlspecialchars($contact['phone']); ?></a>
+                                    <a href="tel:<?php echo htmlspecialchars($contact['phone']); ?>"><?php echo htmlspecialchars($contact['phone']); ?></a>
                                 </div>
                             </div>
                             <div class="contact-item">
                                 <i class="fab fa-telegram fa-2x"></i>
                                 <div>
                                     <h4>Telegram</h4>
-                                    <a href="https://t.me/<?php echo htmlspecialchars($contact['telegram']); ?>"
-                                        target="_blank">@<?php echo htmlspecialchars($contact['telegram']); ?></a>
+                                    <a href="https://t.me/<?php echo htmlspecialchars($contact['telegram']); ?>" target="_blank">@<?php echo htmlspecialchars($contact['telegram']); ?></a>
                                 </div>
                             </div>
                         </div>
@@ -201,14 +183,13 @@ $settings = $settings_result->fetch_assoc();
                     <div class="col-lg-6">
                         <form id="contactForm" class="contact-form">
                             <div class="mb-3">
-                                <input type="text" class="form-control" placeholder="Ваше имя" required>
+                                <input type="text" name="name" class="form-control" placeholder="Ваше имя" required>
                             </div>
                             <div class="mb-3">
-                                <input type="email" class="form-control" placeholder="Ваш email" required>
+                                <input type="email" name="email" class="form-control" placeholder="Ваш email" required>
                             </div>
                             <div class="mb-3">
-                                <textarea class="form-control" rows="5" placeholder="Ваше сообщение"
-                                    required></textarea>
+                                <textarea name="message" class="form-control" rows="5" placeholder="Ваше сообщение" required></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Отправить сообщение</button>
                         </form>
@@ -220,8 +201,7 @@ $settings = $settings_result->fetch_assoc();
         <!-- Футер -->
         <footer class="bg-dark text-white py-4">
             <div class="container text-center">
-                <p>&copy; <?php echo date('Y'); ?> <?php echo htmlspecialchars($settings['site_title']); ?>. Все права
-                    защищены.</p>
+                <p>&copy; <?php echo date('Y'); ?> <?php echo htmlspecialchars($settings['site_title']); ?>. Все права защищены.</p>
             </div>
         </footer>
     </div>
@@ -229,21 +209,19 @@ $settings = $settings_result->fetch_assoc();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/script.js"></script>
 </body>
-
 </html>
 
 <?php
-function hex2rgb($hex)
-{
+function hex2rgb($hex) {
     $hex = str_replace("#", "", $hex);
-    if (strlen($hex) == 3) {
-        $r = hexdec(substr($hex, 0, 1) . substr($hex, 0, 1));
-        $g = hexdec(substr($hex, 1, 1) . substr($hex, 1, 1));
-        $b = hexdec(substr($hex, 2, 1) . substr($hex, 2, 1));
+    if(strlen($hex) == 3) {
+        $r = hexdec(substr($hex,0,1).substr($hex,0,1));
+        $g = hexdec(substr($hex,1,1).substr($hex,1,1));
+        $b = hexdec(substr($hex,2,1).substr($hex,2,1));
     } else {
-        $r = hexdec(substr($hex, 0, 2));
-        $g = hexdec(substr($hex, 2, 2));
-        $b = hexdec(substr($hex, 4, 2));
+        $r = hexdec(substr($hex,0,2));
+        $g = hexdec(substr($hex,2,2));
+        $b = hexdec(substr($hex,4,2));
     }
     return "$r,$g,$b";
 }

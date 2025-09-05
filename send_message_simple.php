@@ -1,6 +1,6 @@
 <?php
-// Универсальный обработчик контактной формы
-// Работает с PHPMailer или с встроенной функцией mail()
+// Улучшенный обработчик контактной формы
+// Работает с встроенной функцией mail()
 
 // Отключаем вывод ошибок
 ini_set('display_errors', 0);
@@ -15,7 +15,7 @@ header('Content-Type: application/json; charset=utf-8');
 try {
     // Проверяем, что это POST запрос
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        throw new Exception('Метод не разрешен');
+        throw new Exception('Метод не разрешен. Используйте POST.');
     }
 
     // Получаем данные из формы
@@ -49,7 +49,7 @@ try {
     $stmt->bind_param("sss", $name, $email, $message);
     
     if (!$stmt->execute()) {
-        throw new Exception('Ошибка при сохранении сообщения в базу данных');
+        throw new Exception('Ошибка при сохранении сообщения в базу данных: ' . $conn->error);
     }
 
     // Отправляем письмо через функцию mail()
@@ -62,6 +62,8 @@ try {
     $headers .= "From: " . (defined('SMTP_FROM_EMAIL') ? SMTP_FROM_EMAIL : 'noreply@zubkov.space') . "\r\n";
     $headers .= "Reply-To: " . $email . "\r\n";
     $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
+    $headers .= "X-Priority: 3\r\n";
+    $headers .= "X-MSMail-Priority: Normal\r\n";
     
     // Формируем тело письма
     $body = "Новое сообщение с сайта zubkov.space\n\n";
@@ -79,6 +81,12 @@ try {
     $mail_sent = mail($to, $subject, $body, $headers);
 
     if ($mail_sent) {
+        // Дополнительно отправляем уведомление на второй email (если настроен)
+        $admin_email = defined('SMTP_USERNAME') ? SMTP_USERNAME : null;
+        if ($admin_email && $admin_email !== $to) {
+            mail($admin_email, $subject, $body, $headers);
+        }
+        
         // Очищаем буфер и отправляем успешный ответ
         ob_end_clean();
         echo json_encode([
@@ -91,7 +99,7 @@ try {
             ]
         ]);
     } else {
-        throw new Exception('Ошибка при отправке письма. Пожалуйста, попробуйте позже.');
+        throw new Exception('Ошибка при отправке письма. Функция mail() вернула false.');
     }
 
 } catch (Exception $e) {
@@ -102,9 +110,11 @@ try {
         'message' => 'Произошла ошибка при отправке сообщения: ' . $e->getMessage(),
         'debug' => [
             'method' => $_SERVER['REQUEST_METHOD'],
+            'post_data' => $_POST,
             'error' => $e->getMessage()
         ]
     ]);
 }
 
 exit;
+?>
