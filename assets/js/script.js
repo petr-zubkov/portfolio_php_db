@@ -1,4 +1,4 @@
-// Плавная прокрутка
+// Плавная прокрутка для навигационных ссылок
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -12,7 +12,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Изменение навигации при прокрутке
+// Изменение навигации при прокрутке страницы
 window.addEventListener('scroll', function() {
     const navbar = document.querySelector('.navbar');
     if (window.scrollY > 50) {
@@ -24,7 +24,7 @@ window.addEventListener('scroll', function() {
     }
 });
 
-// Форма контактов
+// 🎯 ОСНОВНОЙ ОБРАБОТЧИК ФОРМЫ КОНТАКТОВ
 document.getElementById('contactForm')?.addEventListener('submit', function(e) {
     e.preventDefault();
     
@@ -32,7 +32,7 @@ document.getElementById('contactForm')?.addEventListener('submit', function(e) {
     const submitButton = form.querySelector('button[type="submit"]');
     const originalButtonText = submitButton.textContent;
     
-    // Получаем данные формы
+    // Получаем данные из формы
     const formData = new FormData(form);
     const data = {
         name: formData.get('name') || form.querySelector('input[placeholder="Ваше имя"]').value,
@@ -40,7 +40,7 @@ document.getElementById('contactForm')?.addEventListener('submit', function(e) {
         message: formData.get('message') || form.querySelector('textarea[placeholder="Ваше сообщение"]').value
     };
     
-    // Валидация
+    // Валидация данных
     if (!data.name.trim()) {
         showMessage('Пожалуйста, введите ваше имя', 'error');
         return;
@@ -60,29 +60,49 @@ document.getElementById('contactForm')?.addEventListener('submit', function(e) {
     submitButton.disabled = true;
     submitButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Отправка...';
     
-    // Отправляем данные на сервер
-    fetch('send_message.php', {
+    // 📧 ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР
+    // Используем наш улучшенный SMTP обработчик
+    fetch('send_message_fallback.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: new URLSearchParams(data)
     })
-    .then(response => response.json())
+    .then(response => {
+        // Проверяем, что ответ в формате JSON
+        if (!response.ok) {
+            throw new Error('Ошибка сети');
+        }
+        return response.json();
+    })
     .then(result => {
         if (result.success) {
+            // ✅ Успешная отправка
             showMessage(result.message, 'success');
-            form.reset();
+            form.reset(); // Очищаем форму
+            
+            // Дополнительная информация для отладки
+            if (result.debug) {
+                console.log('Debug info:', result.debug);
+            }
         } else {
+            // ❌ Ошибка при отправке
             showMessage(result.message, 'error');
+            
+            // Показываем дополнительную информацию для отладки
+            if (result.debug) {
+                console.error('Debug info:', result.debug);
+            }
         }
     })
     .catch(error => {
+        // ❌ Ошибка сети или сервера
         console.error('Error:', error);
         showMessage('Произошла ошибка при отправке сообщения. Пожалуйста, попробуйте позже.', 'error');
     })
     .finally(() => {
-        // Восстанавливаем кнопку
+        // Всегда восстанавливаем кнопку
         submitButton.disabled = false;
         submitButton.textContent = originalButtonText;
     });
@@ -94,7 +114,7 @@ function isValidEmail(email) {
     return emailRegex.test(email);
 }
 
-// Функция для показа сообщений
+// Функция для показа сообщений пользователю
 function showMessage(message, type) {
     // Удаляем существующие сообщения
     const existingAlert = document.querySelector('.form-alert');
@@ -106,19 +126,45 @@ function showMessage(message, type) {
     const alertDiv = document.createElement('div');
     alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} form-alert`;
     alertDiv.style.marginTop = '15px';
+    alertDiv.style.padding = '12px 20px';
+    alertDiv.style.borderRadius = '8px';
+    alertDiv.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
     alertDiv.textContent = message;
+    
+    // Добавляем иконку в зависимости от типа
+    if (type === 'success') {
+        alertDiv.innerHTML = '<i class="fas fa-check-circle me-2"></i>' + message;
+    } else {
+        alertDiv.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>' + message;
+    }
     
     // Добавляем сообщение после формы
     const form = document.getElementById('contactForm');
     form.parentNode.insertBefore(alertDiv, form.nextSibling);
     
+    // Плавная анимация появления
+    alertDiv.style.opacity = '0';
+    alertDiv.style.transform = 'translateY(-10px)';
+    alertDiv.style.transition = 'all 0.3s ease';
+    
+    setTimeout(() => {
+        alertDiv.style.opacity = '1';
+        alertDiv.style.transform = 'translateY(0)';
+    }, 10);
+    
     // Автоматически скрываем сообщение через 5 секунд
     setTimeout(() => {
-        alertDiv.remove();
+        alertDiv.style.opacity = '0';
+        alertDiv.style.transform = 'translateY(-10px)';
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.remove();
+            }
+        }, 300);
     }, 5000);
 }
 
-// Анимация при прокрутке
+// Анимация элементов при прокрутке страницы
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -100px 0px'
@@ -133,10 +179,26 @@ const observer = new IntersectionObserver(function(entries) {
     });
 }, observerOptions);
 
-// Наблюдаем за элементами
+// Применяем анимацию к карточкам навыков, портфолио и статистики
 document.querySelectorAll('.skill-card, .portfolio-card, .stat-item').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(20px)';
     el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
     observer.observe(el);
 });
+
+// 📋 ИНСТРУКЦИЯ:
+// Этот файл уже настроен для работы с SMTP обработчиком
+// 
+// Что он делает:
+// 1. Собирает данные из формы контактов
+// 2. Проверяет их корректность
+// 3. Показывает индикатор загрузки
+// 4. Отправляет данные на send_message_smtp_simple.php
+// 5. Показывает результат пользователю
+// 6. Сохраняет отладочную информацию в консоль
+//
+// Для работы нужно:
+// - Настроить пароль в config.php
+// - Включить SMTP в настройках Mail.ru
+// - Протестировать через test_smtp_simple.php
