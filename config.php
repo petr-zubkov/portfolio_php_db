@@ -21,11 +21,15 @@ define('UPLOAD_URL', '/uploads/');
 // Настройки почты
 define('SMTP_HOST', 'smtp.mail.ru');
 define('SMTP_PORT', 465);
-define('SMTP_USERNAME', 'petr-zubkov@mail.ru');
-define('SMTP_PASSWORD', '2zVHAaCehztVoZIoi9U0'); // Замените на ваш пароль
-define('SMTP_FROM_EMAIL', 'petr-zubkov@mail.ru');
+define('SMTP_USER', 'petr-zubkov@mail.ru');
+define('SMTP_PASS', '2zVHAaCehztVoZIoi9U0'); // Замените на ваш пароль
+define('SMTP_FROM', 'petr-zubkov@mail.ru');
 define('SMTP_FROM_NAME', 'Пётр Зубков');
 define('SMTP_TO_EMAIL', 'petr-zubkov@mail.ru');
+
+// Настройки сайта
+define('SITE_URL', 'https://zubkov.space');
+define('ADMIN_EMAIL', 'petr-zubkov@mail.ru');
 
 // Создаем папку для загрузок если ее нет
 if (!file_exists(UPLOAD_PATH)) {

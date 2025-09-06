@@ -1,0 +1,16 @@
+[06-Sep-2025 20:07:15 Europe/Moscow] Ошибка в send_message_fixed_smtp.php: Не определена константа: SMTP_USER
+[06-Sep-2025 20:12:46 Europe/Moscow] Ошибка в send_message_fixed_smtp.php: Не определены константы: SMTP_PASS
+[06-Sep-2025 20:14:16 Europe/Moscow] Ошибка в send_message_fixed_smtp.php: Метод не поддерживается
+[06-Sep-2025 20:15:13 Europe/Moscow] Ошибка в send_message_fixed_smtp.php: Ошибка установки отправителя
+[06-Sep-2025 20:15:52 Europe/Moscow] Ошибка в send_message_fixed_smtp.php: Ошибка установки отправителя
+[06-Sep-2025 20:24:33 Europe/Moscow] Ошибка в send_message_fixed_smtp.php: Ошибка установки отправителя
+[06-Sep-2025 20:28:20 Europe/Moscow] PHP Fatal error:  Uncaught Error: Undefined constant "SMTP_FROM" in /var/www/u188825/data/www/zubkov.space/send_message_fixed_smtp.php:47
+Stack trace:
+#0 /var/www/u188825/data/www/zubkov.space/send_message_fixed_smtp.php(212): sendFixedSMTP()
+#1 {main}
+  thrown in /var/www/u188825/data/www/zubkov.space/send_message_fixed_smtp.php on line 47
+[06-Sep-2025 20:29:13 Europe/Moscow] PHP Fatal error:  Uncaught Error: Undefined constant "SMTP_FROM" in /var/www/u188825/data/www/zubkov.space/send_message_fixed_smtp.php:47
+Stack trace:
+#0 /var/www/u188825/data/www/zubkov.space/send_message_fixed_smtp.php(212): sendFixedSMTP()
+#1 {main}
+  thrown in /var/www/u188825/data/www/zubkov.space/send_message_fixed_smtp.php on line 47
