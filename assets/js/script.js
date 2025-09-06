@@ -62,7 +62,7 @@ document.getElementById('contactForm')?.addEventListener('submit', function(e) {
     
     // 📧 ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР - ИСПРАВЛЕНО!
     // Используем финальный SMTP обработчик
-    fetch('send_message_fixed_smtp.php.php', {
+    fetch('send_message_fixed_smtp.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
