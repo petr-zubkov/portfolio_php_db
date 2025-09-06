@@ -1,8 +1,8 @@
 <?php
 define('DB_HOST', 'localhost');
-define('DB_USER', 'u188825_petr-zubkov');
-define('DB_PASS', '559-t7x-6vP-Dyu');
-define('DB_NAME', 'u188825_portfolio_db');
+define('DB_USER', 'user_db');
+define('DB_PASS', 'db_pass');
+define('DB_NAME', 'db_name');
 
 // Подключение к базе данных
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
@@ -21,15 +21,15 @@ define('UPLOAD_URL', '/uploads/');
 // Настройки почты
 define('SMTP_HOST', 'smtp.mail.ru');
 define('SMTP_PORT', 465);
-define('SMTP_USER', 'petr-zubkov@mail.ru');
-define('SMTP_PASS', '2zVHAaCehztVoZIoi9U0'); // Замените на ваш пароль
-define('SMTP_FROM', 'petr-zubkov@mail.ru');
-define('SMTP_FROM_NAME', 'Пётр Зубков');
-define('SMTP_TO_EMAIL', 'petr-zubkov@mail.ru');
+define('SMTP_USER', 'test@mail.ru');
+define('SMTP_PASS', 'psw'); // Замените на ваш пароль
+define('SMTP_FROM', 'post@mail.ru');
+define('SMTP_FROM_NAME', 'ИМЯ');
+define('SMTP_TO_EMAIL', 'adresat@mail.ru');
 
 // Настройки сайта
-define('SITE_URL', 'https://zubkov.space');
-define('ADMIN_EMAIL', 'petr-zubkov@mail.ru');
+define('SITE_URL', 'https://site.xxx');
+define('ADMIN_EMAIL', 'adres@mail.ru');
 
 // Создаем папку для загрузок если ее нет
 if (!file_exists(UPLOAD_PATH)) {
