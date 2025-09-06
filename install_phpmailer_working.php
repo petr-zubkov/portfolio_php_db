@@ -346,9 +346,9 @@ echo "<ol>";
 echo "<li><strong>Настройте SMTP в config.php:</strong><br>";
 echo "Замените <code>your_password_here</code> на ваш реальный пароль от почты</li>";
 echo "<li><strong>Проверьте работу SMTP:</strong><br>";
-echo "Откройте <a href='test_smtp.php'>test_smtp.php</a> для тестирования</li>";
+echo "Откройте <a href='test_smtp_working.php'>test_smtp_working.php</a> для тестирования</li>";
 echo "<li><strong>Используйте обработчик с SMTP:</strong><br>";
-echo "<code>send_message_smtp.php</code> для отправки через SMTP</li>";
+echo "<code>send_message_smtp_final.php</code> для отправки через SMTP</li>";
 echo "</ol>";
 echo "</div>";
 
@@ -362,12 +362,10 @@ echo "</ul>";
 echo "</div>";
 
 echo "<div style='margin: 20px 0;'>";
-echo "<a href='test_smtp.php' style='display: inline-block; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; margin: 5px;'>🧪 Тест SMTP</a>";
-echo "<a href='send_message_smtp.php' style='display: inline-block; padding: 10px 20px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; margin: 5px;'>📧 SMTP обработчик</a>";
+echo "<a href='test_smtp_working.php' style='display: inline-block; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; margin: 5px;'>🧪 Тест SMTP</a>";
+echo "<a href='send_message_smtp_final.php' style='display: inline-block; padding: 10px 20px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; margin: 5px;'>📧 SMTP обработчик</a>";
+echo "<a href='QUICK_FIX.php' style='display: inline-block; padding: 10px 20px; background: #17a2b8; color: white; text-decoration: none; border-radius: 5px; margin: 5px;'>🚀 Быстрое исправление</a>";
 echo "</div>";
-?>';
-
-file_put_contents('install_phpmailer_working.php', $install_content);
 
 echo "<h2>✅ PHPMailer установлен!</h2>";
 echo "<p>Теперь можно настроить SMTP для надежной отправки писем.</p>";
