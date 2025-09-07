@@ -2,7 +2,23 @@
 session_start();
 require_once 'config.php';
 
-// Получаем данные из БД
+if (!isset($_GET['theme_id']) || !isset($_SESSION['admin'])) {
+    header('Location: index.php');
+    exit;
+}
+
+$theme_id = $_GET['theme_id'];
+$theme_result = $conn->prepare("SELECT * FROM themes WHERE id = ?");
+$theme_result->bind_param("i", $theme_id);
+$theme_result->execute();
+$theme = $theme_result->get_result()->fetch_assoc();
+
+if (!$theme) {
+    header('Location: index.php');
+    exit;
+}
+
+// Получаем данные для отображения
 $projects_result = $conn->query("SELECT * FROM projects ORDER BY created_at DESC");
 $projects = $projects_result->fetch_all(MYSQLI_ASSOC);
 
@@ -11,34 +27,19 @@ $skills = $skills_result->fetch_all(MYSQLI_ASSOC);
 
 $contact_result = $conn->query("SELECT * FROM contact LIMIT 1");
 $contact = $contact_result->fetch_assoc();
-
-// Получаем активную тему
-$theme_result = $conn->query("SELECT * FROM themes WHERE is_active = 1 LIMIT 1");
-$theme = $theme_result->fetch_assoc();
-
-// Если нет активной темы, используем настройки по умолчанию
-if (!$theme) {
-    $settings_result = $conn->query("SELECT * FROM settings LIMIT 1");
-    $settings = $settings_result->fetch_assoc();
-    $theme = $settings;
-}
 ?>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($theme['site_title'] ?? 'Портфолио'); ?></title>
+    <title>Предпросмотр темы: <?php echo htmlspecialchars($theme['name']); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=<?php echo urlencode($theme['font_family']); ?>&display=swap" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
-    
-    <!-- Динамическая загрузка CSS темы -->
-    <?php if (!empty($theme['slug'])): ?>
     <link href="assets/css/themes/<?php echo htmlspecialchars($theme['slug']); ?>.css" rel="stylesheet">
-    <?php endif; ?>
-    
     <style>
         :root {
             --primary-color: <?php echo $theme['primary_color']; ?>;
@@ -58,10 +59,54 @@ if (!$theme) {
             background-color: rgba(<?php echo hex2rgb($theme['bg_color']); ?>, 0.95);
         }
         <?php endif; ?>
+        
+        /* Панель предпросмотра */
+        .preview-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            min-width: 250px;
+        }
+        
+        .preview-panel h5 {
+            margin: 0 0 15px 0;
+            color: #fff;
+        }
+        
+        .preview-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .preview-actions .btn {
+            flex: 1;
+        }
     </style>
 </head>
 <body>
     <div class="content-wrapper">
+        <!-- Панель предпросмотра -->
+        <div class="preview-panel">
+            <h5><i class="fas fa-eye"></i> Предпросмотр темы</h5>
+            <p><strong><?php echo htmlspecialchars($theme['name']); ?></strong></p>
+            <p class="small"><?php echo htmlspecialchars($theme['description']); ?></p>
+            <div class="preview-actions">
+                <a href="admin/manage_themes.php" class="btn btn-outline-light btn-sm">
+                    <i class="fas fa-arrow-left"></i> Назад
+                </a>
+                <a href="admin/activate_theme.php?id=<?php echo $theme['id']; ?>" class="btn btn-success btn-sm">
+                    <i class="fas fa-check"></i> Активировать
+                </a>
+            </div>
+        </div>
+
         <!-- Навигация -->
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
             <div class="container">
@@ -75,9 +120,6 @@ if (!$theme) {
                         <li class="nav-item"><a class="nav-link" href="#skills">Навыки</a></li>
                         <li class="nav-item"><a class="nav-link" href="#portfolio">Портфолио</a></li>
                         <li class="nav-item"><a class="nav-link" href="#contact">Контакты</a></li>
-                        <?php if (isset($_SESSION['admin'])): ?>
-                        <li class="nav-item"><a class="nav-link" href="admin/">Админ-панель</a></li>
-                        <?php endif; ?>
                     </ul>
                 </div>
             </div>

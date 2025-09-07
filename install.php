@@ -1,73 +1,81 @@
 <?php
+session_start();
 require_once 'config.php';
 
-echo "<h2>Установка базы данных</h2>";
+echo "<h2>Установка портфолио</h2>";
 
-// SQL для создания таблиц
-$sql = [
-    "CREATE TABLE IF NOT EXISTS `projects` (
-      `id` int(11) NOT NULL AUTO_INCREMENT,
-      `title` varchar(255) NOT NULL,
-      `description` text NOT NULL,
-      `image` varchar(255) NOT NULL,
-      `link` varchar(255) NOT NULL,
-      `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-      PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-
-    "CREATE TABLE IF NOT EXISTS `skills` (
-      `id` int(11) NOT NULL AUTO_INCREMENT,
-      `name` varchar(255) NOT NULL,
-      `icon` varchar(100) NOT NULL,
-      `level` int(11) NOT NULL,
-      PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-
-    "CREATE TABLE IF NOT EXISTS `contact` (
-      `id` int(11) NOT NULL AUTO_INCREMENT,
-      `email` varchar(255) NOT NULL,
-      `phone` varchar(50) NOT NULL,
-      `telegram` varchar(100) NOT NULL,
-      PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-
-    "CREATE TABLE IF NOT EXISTS `settings` (
-      `id` int(11) NOT NULL AUTO_INCREMENT,
-      `site_title` varchar(255) NOT NULL,
-      `hero_title` varchar(255) NOT NULL,
-      `hero_subtitle` text NOT NULL,
-      `avatar` varchar(255) NOT NULL,
-      `about_text` text NOT NULL,
-      `primary_color` varchar(7) NOT NULL,
-      `secondary_color` varchar(7) NOT NULL,
-      `accent_color` varchar(7) NOT NULL,
-      `text_color` varchar(7) NOT NULL,
-      `bg_color` varchar(7) NOT NULL,
-      `font_family` varchar(50) NOT NULL,
-      `bg_image` varchar(255) NOT NULL,
-      `experience_years` int(11) NOT NULL,
-      `projects_count` int(11) NOT NULL,
-      `clients_count` int(11) NOT NULL,
-      PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-
-    "INSERT INTO `settings` (`id`, `site_title`, `hero_title`, `hero_subtitle`, `avatar`, `about_text`, `primary_color`, `secondary_color`, `accent_color`, `text_color`, `bg_color`, `font_family`, `bg_image`, `experience_years`, `projects_count`, `clients_count`) VALUES
-    (1, 'Портфолио верстальщика книг', 'Верстальщик книг', 'Профессиональная верстка печатных и электронных изданий', 'assets/img/placeholder.jpg', '', '#2c3e50', '#3498db', '#e74c3c', '#333333', '#ffffff', 'Roboto', '', 5, 100, 50);",
-
-    "INSERT INTO `contact` (`id`, `email`, `phone`, `telegram`) VALUES
-    (1, '', '', '');"
-];
-
-// Выполняем запросы
-foreach ($sql as $query) {
-    if ($conn->query($query) === TRUE) {
-        echo "Таблица успешно создана/обновлена<br>";
-    } else {
-        echo "Ошибка: " . $conn->error . "<br>";
+try {
+    // Читаем и выполняем SQL файлы
+    $sql_files = ['database.sql', 'create_themes_table.sql'];
+    
+    foreach ($sql_files as $file) {
+        if (file_exists($file)) {
+            echo "<h3>Установка файла: $file</h3>";
+            $sql = file_get_contents($file);
+            
+            if ($conn->multi_query($sql)) {
+                echo "<div class='alert alert-success'>Файл $file успешно установлен!</div>";
+                
+                // Очищаем результаты
+                do {
+                    if ($result = $conn->store_result()) {
+                        $result->free();
+                    }
+                } while ($conn->more_results() && $conn->next_result());
+                
+            } else {
+                throw new Exception("Ошибка при выполнении SQL из файла $file: " . $conn->error);
+            }
+        } else {
+            echo "<div class='alert alert-warning'>Файл $file не найден</div>";
+        }
     }
+    
+    // Создаем изображение-заглушку, если его нет
+    if (!file_exists('assets/img/placeholder.jpg')) {
+        include 'create_placeholder.php';
+        echo "<div class='alert alert-info'>Изображение-заглушка создано</div>";
+    }
+    
+    echo "<div class='alert alert-success'>";
+    echo "<h4>Установка завершена успешно!</h4>";
+    echo "<p>Теперь вы можете:</p>";
+    echo "<ul>";
+    echo "<li><a href='admin/' class='btn btn-primary'>Перейти в админ-панель</a></li>";
+    echo "<li><a href='index.php' class='btn btn-success'>Посмотреть сайт</a></li>";
+    echo "</ul>";
+    echo "</div>";
+    
+} catch (Exception $e) {
+    echo "<div class='alert alert-danger'>Ошибка: " . $e->getMessage() . "</div>";
 }
-
-echo "<h3>Установка завершена!</h3>";
-echo "<p><a href='index.php'>Перейти на сайт</a></p>";
-echo "<p><a href='admin/auth.php'>Войти в админ-панель</a></p>";
 ?>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Установка портфолио</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h2><i class="fas fa-download"></i> Установка портфолио</h2>
+                    </div>
+                    <div class="card-body">
+                        <?php
+                        // Код установки будет выполнен выше
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
