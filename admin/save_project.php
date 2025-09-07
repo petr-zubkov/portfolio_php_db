@@ -1,159 +1,291 @@
 <?php
-// Отключаем вывод ошибок
-ini_set('display_errors', 0);
-error_reporting(0);
-
-// Буферизация вывода
-ob_start();
-
 session_start();
+require_once '../config.php';
+
+// Проверка авторизации
 if (!isset($_SESSION['admin'])) {
-    ob_end_clean();
-    header('HTTP/1.1 403 Forbidden');
+    header('Location: auth.php');
     exit;
 }
 
-require_once '../config.php';
-
-// Устанавливаем заголовок
-header('Content-Type: application/json');
-
-try {
-    // Определяем action автоматически, если он не указан
-    $action = $_POST['action'] ?? '';
+// Обработка формы
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $title = $_POST['title'] ?? '';
+    $description = $_POST['description'] ?? '';
+    $image = $_POST['image'] ?? '';
+    $link = $_POST['link'] ?? '';
+    $id = $_POST['id'] ?? null;
     
-    // Если action не указан, определяем его по наличию данных
-    if (empty($action)) {
-        if (!empty($_POST['id']) && isset($_POST['title'])) {
-            $action = 'edit';
-        } elseif (!empty($_POST['title']) && !empty($_POST['description'])) {
-            $action = 'add';
-        } elseif (!empty($_POST['id'])) {
-            $action = 'delete';
-        }
+    // Валидация
+    if (empty($title) || empty($description) || empty($image)) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Заполните все обязательные поля'
+        ]);
+        exit;
     }
     
-    if (empty($action)) {
-        throw new Exception('Не удалось определить действие. Убедитесь, что все поля заполнены.');
+    if ($id) {
+        // Обновление проекта
+        $stmt = $conn->prepare("UPDATE projects SET title=?, description=?, image=?, link=? WHERE id=?");
+        $stmt->bind_param("ssssi", $title, $description, $image, $link, $id);
+        $message = 'Проект успешно обновлен';
+    } else {
+        // Добавление нового проекта
+        $stmt = $conn->prepare("INSERT INTO projects (title, description, image, link) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $title, $description, $image, $link);
+        $message = 'Проект успешно добавлен';
     }
     
-    switch ($action) {
-        case 'add':
-            $title = $_POST['title'] ?? '';
-            $description = $_POST['description'] ?? '';
-            $link = $_POST['link'] ?? '';
-            $image_url = $_POST['image_url'] ?? '';
-            
-            $image_path = '';
-            
-            // Загрузка изображения если есть
-            if (!empty($_FILES['image']['name'])) {
-                $file_name = time() . '_' . basename($_FILES["image"]["name"]);
-                $target_file = UPLOAD_PATH . $file_name;
-                
-                if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-                    $image_path = UPLOAD_URL . $file_name;
-                }
-            } elseif (!empty($image_url)) {
-                $image_path = $image_url;
-            }
-            
-            if (!empty($title) && !empty($description) && !empty($link) && !empty($image_path)) {
-                $stmt = $conn->prepare("INSERT INTO projects (title, description, image, link) VALUES (?, ?, ?, ?)");
-                $stmt->bind_param("ssss", $title, $description, $image_path, $link);
-                $stmt->execute();
-                
-                ob_end_clean();
-                echo json_encode(['success' => true, 'message' => 'Проект успешно добавлен']);
-            } else {
-                throw new Exception('Заполните все поля: название, описание, ссылка и изображение');
-            }
-            break;
-            
-        case 'edit':
-            $id = $_POST['id'] ?? 0;
-            $title = $_POST['title'] ?? '';
-            $description = $_POST['description'] ?? '';
-            $link = $_POST['link'] ?? '';
-            $image_url = $_POST['image_url'] ?? '';
-            
-            // Получаем текущее изображение
-            $stmt = $conn->prepare("SELECT image FROM projects WHERE id = ?");
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $current_image = $result->fetch_assoc()['image'];
-            
-            $image_path = $current_image;
-            
-            // Загрузка нового изображения если есть
-            if (!empty($_FILES['image']['name'])) {
-                $file_name = time() . '_' . basename($_FILES["image"]["name"]);
-                $target_file = UPLOAD_PATH . $file_name;
-                
-                if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-                    $image_path = UPLOAD_URL . $file_name;
-                    
-                    // Удаляем старое изображение если оно локальное
-                    if (strpos($current_image, UPLOAD_URL) === 0) {
-                        $old_file = UPLOAD_PATH . basename($current_image);
-                        if (file_exists($old_file)) {
-                            unlink($old_file);
-                        }
-                    }
-                }
-            } elseif (!empty($image_url)) {
-                $image_path = $image_url;
-            }
-            
-            if (!empty($title) && !empty($description) && !empty($link) && !empty($image_path)) {
-                $stmt = $conn->prepare("UPDATE projects SET title = ?, description = ?, image = ?, link = ? WHERE id = ?");
-                $stmt->bind_param("ssssi", $title, $description, $image_path, $link, $id);
-                $stmt->execute();
-                
-                ob_end_clean();
-                echo json_encode(['success' => true, 'message' => 'Проект успешно обновлен']);
-            } else {
-                throw new Exception('Заполните все поля: название, описание, ссылка и изображение');
-            }
-            break;
-            
-        case 'delete':
-            $id = $_POST['id'] ?? 0;
-            
-            // Получаем изображение для удаления
-            $stmt = $conn->prepare("SELECT image FROM projects WHERE id = ?");
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $image = $result->fetch_assoc()['image'];
-            
-            // Удаляем изображение если оно локальное
-            if (strpos($image, UPLOAD_URL) === 0) {
-                $file = UPLOAD_PATH . basename($image);
-                if (file_exists($file)) {
-                    unlink($file);
-                }
-            }
-            
-            // Удаляем запись из БД
-            $stmt = $conn->prepare("DELETE FROM projects WHERE id = ?");
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-            
-            ob_end_clean();
-            echo json_encode(['success' => true, 'message' => 'Проект успешно удален']);
-            break;
-            
-        default:
-            throw new Exception('Неизвестный action: ' . $action);
+    if ($stmt->execute()) {
+        echo json_encode([
+            'success' => true,
+            'message' => $message
+        ]);
+    } else {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Ошибка при сохранении проекта'
+        ]);
     }
-    
-} catch (Exception $e) {
-    // Очищаем буфер и выводим ошибку
-    ob_end_clean();
-    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    exit;
 }
 
-exit;
+// Получаем проекты для отображения
+$projects_result = $conn->query("SELECT * FROM projects ORDER BY created_at DESC");
+$projects = $projects_result->fetch_all(MYSQLI_ASSOC);
+
+// Редактирование проекта
+$edit_project = null;
+if (isset($_GET['edit'])) {
+    $edit_id = $_GET['edit'];
+    $stmt = $conn->prepare("SELECT * FROM projects WHERE id = ?");
+    $stmt->bind_param("i", $edit_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $edit_project = $result->fetch_assoc();
+}
 ?>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo $edit_project ? 'Редактировать проект' : 'Управление проектами'; ?></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="../assets/css/admin.css" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-container">
+        <?php include 'sidebar.php'; ?>
+        
+        <div class="admin-main">
+            <h2 class="mb-4"><?php echo $edit_project ? 'Редактировать проект' : 'Добавить проект'; ?></h2>
+            
+            <form id="projectForm" class="admin-form">
+                <?php if ($edit_project): ?>
+                    <input type="hidden" name="id" value="<?php echo $edit_project['id']; ?>">
+                <?php endif; ?>
+                
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Название проекта <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="title" name="title" 
+                                   value="<?php echo htmlspecialchars($edit_project['title'] ?? ''); ?>" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Описание <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="description" name="description" rows="4" required><?php echo htmlspecialchars($edit_project['description'] ?? ''); ?></textarea>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="image" class="form-label">URL изображения <span class="text-danger">*</span></label>
+                                    <input type="url" class="form-control" id="image" name="image" 
+                                           value="<?php echo htmlspecialchars($edit_project['image'] ?? ''); ?>" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="link" class="form-label">Ссылка на проект</label>
+                                    <input type="url" class="form-control" id="link" name="link" 
+                                           value="<?php echo htmlspecialchars($edit_project['link'] ?? '#'); ?>">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary" id="saveBtn">
+                                <i class="fas fa-save"></i> <?php echo $edit_project ? 'Обновить' : 'Добавить'; ?> проект
+                            </button>
+                            <a href="index.php" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Назад
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="mb-0">Предпросмотр</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="portfolio-card mb-3" style="height: 200px;">
+                                    <img id="previewImage" src="<?php echo htmlspecialchars($edit_project['image'] ?? '../assets/img/placeholder.jpg'); ?>" 
+                                         alt="Предпросмотр" style="width: 100%; height: 100%; object-fit: cover;"
+                                         onerror="this.src='../assets/img/placeholder.jpg'">
+                                </div>
+                                <h6 id="previewTitle"><?php echo htmlspecialchars($edit_project['title'] ?? 'Название проекта'); ?></h6>
+                                <p class="small text-muted" id="previewDescription"><?php echo htmlspecialchars(substr($edit_project['description'] ?? 'Описание проекта', 0, 100)) . '...'; ?></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            
+            <?php if (!$edit_project && count($projects) > 0): ?>
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Существующие проекты</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Название</th>
+                                        <th>Описание</th>
+                                        <th>Дата создания</th>
+                                        <th>Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($projects as $project): ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($project['title']); ?></td>
+                                            <td><?php echo htmlspecialchars(substr($project['description'], 0, 50)) . '...'; ?></td>
+                                            <td><?php echo date('d.m.Y', strtotime($project['created_at'])); ?></td>
+                                            <td>
+                                                <a href="save_project.php?edit=<?php echo $project['id']; ?>" class="btn btn-sm btn-primary">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <button type="button" class="btn btn-sm btn-danger" onclick="deleteProject(<?php echo $project['id']; ?>)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('projectForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const saveBtn = document.getElementById('saveBtn');
+            const originalText = saveBtn.innerHTML;
+            
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Сохранение...';
+            
+            const formData = new FormData(this);
+            
+            fetch('save_project.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showAlert('success', data.message);
+                    setTimeout(() => {
+                        window.location.href = 'index.php';
+                    }, 1500);
+                } else {
+                    showAlert('danger', data.message);
+                }
+            })
+            .catch(error => {
+                showAlert('danger', 'Произошла ошибка');
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = originalText;
+            });
+        });
+        
+        function showAlert(type, message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            const form = document.getElementById('projectForm');
+            form.parentNode.insertBefore(alertDiv, form);
+            
+            setTimeout(() => {
+                alertDiv.classList.remove('show');
+                setTimeout(() => alertDiv.remove(), 150);
+            }, 5000);
+        }
+        
+        function deleteProject(id) {
+            if (confirm('Вы уверены, что хотите удалить этот проект?')) {
+                fetch('save_project.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `id=${id}&delete=true`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showAlert('success', data.message);
+                        setTimeout(() => location.reload(), 1500);
+                    } else {
+                        showAlert('danger', data.message);
+                    }
+                });
+            }
+        }
+        
+        // Обновление предпросмотра
+        document.getElementById('title').addEventListener('input', function() {
+            document.getElementById('previewTitle').textContent = this.value || 'Название проекта';
+        });
+        
+        document.getElementById('description').addEventListener('input', function() {
+            const text = this.value || 'Описание проекта';
+            document.getElementById('previewDescription').textContent = text.substring(0, 100) + (text.length > 100 ? '...' : '');
+        });
+        
+        document.getElementById('image').addEventListener('input', function() {
+            const img = document.getElementById('previewImage');
+            if (this.value) {
+                img.src = this.value;
+                img.onerror = function() {
+                    this.src = '../assets/img/placeholder.jpg';
+                };
+            } else {
+                img.src = '../assets/img/placeholder.jpg';
+            }
+        });
+    </script>
+</body>
+</html>
