@@ -6,6 +6,9 @@
         <a class="nav-link" href="index.php">
             <i class="fas fa-tachometer-alt"></i> Главная
         </a>
+        <a class="nav-link" href="manage_personal_info.php">
+            <i class="fas fa-user"></i> Персональная информация
+        </a>
         <a class="nav-link" href="manage_themes.php">
             <i class="fas fa-paint-brush"></i> Управление темами
         </a>

@@ -16,6 +16,10 @@ $themes_count = $conn->query("SELECT COUNT(*) as count FROM themes")->fetch_asso
 // Получаем активную тему
 $active_theme_result = $conn->query("SELECT * FROM themes WHERE is_active = 1 LIMIT 1");
 $active_theme = $active_theme_result->fetch_assoc();
+
+// Получаем персональную информацию
+$personal_info_result = $conn->query("SELECT * FROM personal_info LIMIT 1");
+$personal_info = $personal_info_result->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +41,7 @@ $active_theme = $active_theme_result->fetch_assoc();
             
             <!-- Статистика -->
             <div class="row mb-4">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="card text-white bg-primary">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
@@ -52,7 +56,7 @@ $active_theme = $active_theme_result->fetch_assoc();
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="card text-white bg-success">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
@@ -67,7 +71,7 @@ $active_theme = $active_theme_result->fetch_assoc();
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="card text-white bg-info">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
@@ -77,6 +81,23 @@ $active_theme = $active_theme_result->fetch_assoc();
                                 </div>
                                 <div>
                                     <i class="fas fa-palette fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-warning">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h4 class="card-title">
+                                        <?php echo $personal_info ? '✓' : '✗'; ?>
+                                    </h4>
+                                    <p class="card-text">Персональные данные</p>
+                                </div>
+                                <div>
+                                    <i class="fas fa-user fa-2x"></i>
                                 </div>
                             </div>
                         </div>
@@ -118,6 +139,50 @@ $active_theme = $active_theme_result->fetch_assoc();
                 </div>
             <?php endif; ?>
             
+            <!-- Персональная информация -->
+            <?php if ($personal_info): ?>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Персональная информация</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h6><?php echo htmlspecialchars($personal_info['full_name']); ?></h6>
+                                <p class="text-muted"><?php echo htmlspecialchars($personal_info['profession']); ?></p>
+                                <p class="small"><?php echo htmlspecialchars(substr($personal_info['bio'], 0, 100)) . '...'; ?></p>
+                                <div class="d-flex gap-2">
+                                    <span class="badge bg-info"><?php echo $personal_info['experience_years']; ?>+ лет опыта</span>
+                                    <span class="badge bg-success"><?php echo $personal_info['projects_count']; ?>+ проектов</span>
+                                    <span class="badge bg-warning"><?php echo $personal_info['clients_count']; ?>+ клиентов</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="text-center">
+                                    <img src="<?php echo htmlspecialchars($personal_info['avatar']); ?>" 
+                                         alt="Аватар" 
+                                         style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #ddd;"
+                                         onerror="this.src='../assets/img/placeholder.jpg'">
+                                    <p class="small mt-2"><?php echo htmlspecialchars($personal_info['location']); ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php else: ?>
+                <div class="card mb-4 border-warning">
+                    <div class="card-header bg-warning">
+                        <h5 class="mb-0">Персональная информация не настроена</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted">Пожалуйста, настройте вашу персональную информацию, чтобы она отображалась на сайте.</p>
+                        <a href="manage_personal_info.php" class="btn btn-warning">
+                            <i class="fas fa-user-edit"></i> Настроить персональную информацию
+                        </a>
+                    </div>
+                </div>
+            <?php endif; ?>
+            
             <!-- Быстрые действия -->
             <div class="card">
                 <div class="card-header">
@@ -125,6 +190,12 @@ $active_theme = $active_theme_result->fetch_assoc();
                 </div>
                 <div class="card-body">
                     <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <a href="manage_personal_info.php" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-user"></i><br>
+                                Персональная информация
+                            </a>
+                        </div>
                         <div class="col-md-3 mb-3">
                             <a href="manage_themes.php" class="btn btn-outline-primary w-100">
                                 <i class="fas fa-paint-brush"></i><br>
