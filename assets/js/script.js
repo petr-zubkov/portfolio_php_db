@@ -24,45 +24,45 @@ window.addEventListener('scroll', function() {
     }
 });
 
-// 🎯 ОСНОВНОЙ ОБРАБОТЧИК ФОРМЫ КОНТАКТОВ - ИСПРАВЛЕННАЯ ВЕРСИЯ
+// 🎯 ОСНОВНОЙ ОБРАБОТЧИК ФОРМЫ КОНТАКТОВ - АСИНХРОННАЯ ОТПРАВКА
 document.getElementById('contactForm')?.addEventListener('submit', function(e) {
-    e.preventDefault();
+    e.preventDefault(); // Предотвращаем стандартную отправку формы
     
     const form = this;
-    const submitButton = form.querySelector('button[type="submit"]');
-    const originalButtonText = submitButton.textContent;
+    const submitButton = document.getElementById('submitBtn');
+    const btnText = submitButton.querySelector('.btn-text');
+    const btnSpinner = submitButton.querySelector('.btn-spinner');
+    const messageContainer = document.getElementById('formMessage');
     
     // Получаем данные из формы
     const formData = new FormData(form);
     const data = {
-        name: formData.get('name') || form.querySelector('input[placeholder="Ваше имя"]').value,
-        email: formData.get('email') || form.querySelector('input[placeholder="Ваш email"]').value,
-        message: formData.get('message') || form.querySelector('textarea[placeholder="Ваше сообщение"]').value
+        name: formData.get('name'),
+        email: formData.get('email'),
+        message: formData.get('message')
     };
     
     // Валидация данных
     if (!data.name.trim()) {
-        showMessage('Пожалуйста, введите ваше имя', 'error');
+        showFormMessage('Пожалуйста, введите ваше имя', 'error');
         return;
     }
     
     if (!data.email.trim() || !isValidEmail(data.email)) {
-        showMessage('Пожалуйста, введите корректный email', 'error');
+        showFormMessage('Пожалуйста, введите корректный email', 'error');
         return;
     }
     
     if (!data.message.trim()) {
-        showMessage('Пожалуйста, введите ваше сообщение', 'error');
+        showFormMessage('Пожалуйста, введите ваше сообщение', 'error');
         return;
     }
     
     // Показываем индикатор загрузки
-    submitButton.disabled = true;
-    submitButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Отправка...';
+    setLoadingState(true);
     
-    // 📧 ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР - ИСПРАВЛЕНО!
-    // Используем финальный SMTP обработчик
-    fetch('send_message_fixed_smtp.php', {
+    // 📧 ОТПРАВЛЯЕМ ДАННЫЕ НА СЕРВЕР АСИНХРОННО
+    fetch('send_message.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -70,98 +70,130 @@ document.getElementById('contactForm')?.addEventListener('submit', function(e) {
         body: new URLSearchParams(data)
     })
     .then(response => {
-        // Проверяем, что ответ в формате JSON
         if (!response.ok) {
             throw new Error('Ошибка сети');
         }
-        return response.json();
+        return response.text(); // Получаем текст ответа
     })
-    .then(result => {
-        if (result.success) {
-            // ✅ Успешная отправка
-            showMessage(result.message, 'success');
-            form.reset(); // Очищаем форму
-            
-            // Дополнительная информация для отладки
-            if (result.debug) {
-                console.log('Debug info:', result.debug);
+    .then(text => {
+        // Проверяем, является ли ответ JSON
+        try {
+            const result = JSON.parse(text);
+            if (result.success) {
+                showFormMessage(result.message || 'Ваше сообщение успешно отправлено!', 'success');
+                form.reset(); // Очищаем форму
+            } else {
+                showFormMessage(result.message || 'Произошла ошибка при отправке.', 'error');
             }
-        } else {
-            // ❌ Ошибка при отправке
-            showMessage(result.message, 'error');
-            
-            // Показываем дополнительную информацию для отладки
-            if (result.debug) {
-                console.error('Debug info:', result.debug);
+        } catch (e) {
+            // Если ответ не JSON, проверяем на наличие сообщений об успехе/ошибке
+            if (text.includes('успешно') || text.includes('отправлено')) {
+                showFormMessage('Ваше сообщение успешно отправлено!', 'success');
+                form.reset();
+            } else {
+                showFormMessage('Произошла ошибка при отправке сообщения.', 'error');
             }
         }
     })
     .catch(error => {
-        // ❌ Ошибка сети или сервера
         console.error('Error:', error);
-        showMessage('Произошла ошибка при отправке сообщения. Пожалуйста, попробуйте позже.', 'error');
+        showFormMessage('Произошла ошибка при отправке сообщения. Пожалуйста, попробуйте позже.', 'error');
     })
     .finally(() => {
         // Всегда восстанавливаем кнопку
-        submitButton.disabled = false;
-        submitButton.textContent = originalButtonText;
+        setLoadingState(false);
     });
 });
+
+// Функция для установки состояния загрузки
+function setLoadingState(loading) {
+    const submitButton = document.getElementById('submitBtn');
+    const btnText = submitButton.querySelector('.btn-text');
+    const btnSpinner = submitButton.querySelector('.btn-spinner');
+    
+    if (loading) {
+        submitButton.disabled = true;
+        btnText.classList.add('d-none');
+        btnSpinner.classList.remove('d-none');
+        submitButton.style.cursor = 'not-allowed';
+        submitButton.style.opacity = '0.7';
+    } else {
+        submitButton.disabled = false;
+        btnText.classList.remove('d-none');
+        btnSpinner.classList.add('d-none');
+        submitButton.style.cursor = 'pointer';
+        submitButton.style.opacity = '1';
+    }
+}
+
+// Функция для показа сообщений в форме
+function showFormMessage(message, type) {
+    const messageContainer = document.getElementById('formMessage');
+    
+    // Очищаем предыдущие сообщения
+    messageContainer.innerHTML = '';
+    
+    // Создаем элемент для сообщения
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`;
+    messageDiv.style.marginTop = '20px';
+    messageDiv.style.borderRadius = '8px';
+    messageDiv.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+    
+    // Добавляем иконку и кнопку закрытия
+    if (type === 'success') {
+        messageDiv.innerHTML = `
+            <i class="fas fa-check-circle me-2"></i>
+            <strong>${type === 'success' ? 'Успешно!' : 'Ошибка!'}</strong> ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+        `;
+        messageDiv.style.borderLeft = '4px solid #28a745';
+        messageDiv.style.backgroundColor = '#d4edda';
+        messageDiv.style.borderColor = '#c3e6cb';
+        messageDiv.style.color = '#155724';
+    } else {
+        messageDiv.innerHTML = `
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <strong>Ошибка!</strong> ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+        `;
+        messageDiv.style.borderLeft = '4px solid #dc3545';
+        messageDiv.style.backgroundColor = '#f8d7da';
+        messageDiv.style.borderColor = '#f5c6cb';
+        messageDiv.style.color = '#721c24';
+    }
+    
+    // Добавляем сообщение в контейнер
+    messageContainer.appendChild(messageDiv);
+    
+    // Плавная анимация появления
+    messageDiv.style.opacity = '0';
+    messageDiv.style.transform = 'translateY(-10px)';
+    messageDiv.style.transition = 'all 0.3s ease';
+    
+    setTimeout(() => {
+        messageDiv.style.opacity = '1';
+        messageDiv.style.transform = 'translateY(0)';
+    }, 10);
+    
+    // Прокручиваем к сообщению
+    messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    
+    // Автоматически скрываем сообщение через 7 секунд для успешных сообщений
+    if (type === 'success') {
+        setTimeout(() => {
+            if (messageDiv.parentNode) {
+                const bsAlert = new bootstrap.Alert(messageDiv);
+                bsAlert.close();
+            }
+        }, 7000);
+    }
+}
 
 // Функция для валидации email
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
-}
-
-// Функция для показа сообщений пользователю
-function showMessage(message, type) {
-    // Удаляем существующие сообщения
-    const existingAlert = document.querySelector('.form-alert');
-    if (existingAlert) {
-        existingAlert.remove();
-    }
-    
-    // Создаем элемент для сообщения
-    const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} form-alert`;
-    alertDiv.style.marginTop = '15px';
-    alertDiv.style.padding = '12px 20px';
-    alertDiv.style.borderRadius = '8px';
-    alertDiv.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-    alertDiv.textContent = message;
-    
-    // Добавляем иконку в зависимости от типа
-    if (type === 'success') {
-        alertDiv.innerHTML = '<i class="fas fa-check-circle me-2"></i>' + message;
-    } else {
-        alertDiv.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>' + message;
-    }
-    
-    // Добавляем сообщение после формы
-    const form = document.getElementById('contactForm');
-    form.parentNode.insertBefore(alertDiv, form.nextSibling);
-    
-    // Плавная анимация появления
-    alertDiv.style.opacity = '0';
-    alertDiv.style.transform = 'translateY(-10px)';
-    alertDiv.style.transition = 'all 0.3s ease';
-    
-    setTimeout(() => {
-        alertDiv.style.opacity = '1';
-        alertDiv.style.transform = 'translateY(0)';
-    }, 10);
-    
-    // Автоматически скрываем сообщение через 5 секунд
-    setTimeout(() => {
-        alertDiv.style.opacity = '0';
-        alertDiv.style.transform = 'translateY(-10px)';
-        setTimeout(() => {
-            if (alertDiv.parentNode) {
-                alertDiv.remove();
-            }
-        }, 300);
-    }, 5000);
 }
 
 // Анимация элементов при прокрутке страницы
@@ -187,19 +219,35 @@ document.querySelectorAll('.skill-card, .portfolio-card, .stat-item').forEach(el
     observer.observe(el);
 });
 
+// Обработка закрытия alert сообщений
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('btn-close')) {
+        const alert = e.target.closest('.alert');
+        if (alert) {
+            alert.style.opacity = '0';
+            alert.style.transform = 'translateY(-10px)';
+            setTimeout(() => {
+                if (alert.parentNode) {
+                    alert.remove();
+                }
+            }, 300);
+        }
+    }
+});
+
 // 📋 ИНСТРУКЦИЯ:
-// Этот файл настроен для работы с SMTP обработчиком
+// Этот файл настроен для асинхронной отправки формы
 // 
 // Что он делает:
-// 1. Собирает данные из формы контактов
-// 2. Проверяет их корректность
-// 3. Показывает индикатор загрузки
-// 4. Отправляет данные на send_message_smtp_final.php (ИСПРАВЛЕНО!)
-// 5. Показывает результат пользователю
-// 6. Сохраняет отладочную информацию в консоль
+// 1. Предотвращает стандартную отправку формы (без перезагрузки страницы)
+// 2. Собирает и валидирует данные формы
+// 3. Показывает визуальный индикатор загрузки
+// 4. Отправляет данные асинхронно через fetch API
+// 5. Показывает красивые сообщения об успехе/ошибке
+// 6. Очищает форму при успешной отправке
 //
-// Для работы нужно:
-// - Настроить пароль в config.php
-// - Включить SMTP в настройках Mail.ru
-// - Установить PHPMailer (install_phpmailer_working.php)
-// - Протестировать через test_smtp_working.php
+// Преимущества:
+// - Нет перезагрузки страницы (исправляет "дерганье")
+// - Визуальная обратная связь для пользователя
+// - Красивые уведомления вместо alert
+// - Обработка ошибок и сетевых проблем
