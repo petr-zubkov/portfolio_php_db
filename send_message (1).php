@@ -21,12 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (empty($message)) $errors[] = "Введите сообщение";
         
         if (!empty($errors)) {
-            header('Content-Type: application/json');
-            echo json_encode([
-                'success' => false,
-                'message' => implode('<br>', $errors),
-                'debug' => ['validation_errors' => $errors]
-            ]);
+            $_SESSION['error'] = implode('<br>', $errors);
+            header('Location: index.php#contact');
             exit;
         }
         
@@ -197,35 +193,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("Ошибка отправки письма");
         }
         
-        // Success message - возвращаем JSON для асинхронной обработки
-        header('Content-Type: application/json');
-        echo json_encode([
-            'success' => true,
-            'message' => "Ваше сообщение успешно отправлено! Я свяжусь с вами в ближайшее время.",
-            'debug' => [
-                'method' => 'SMTP',
-                'db_saved' => $dbSaved,
-                'smtp_sent' => $smtpSent,
-                'to_email' => ADMIN_EMAIL
-            ]
-        ]);
+        // Success message
+        $_SESSION['success'] = "Ваше сообщение успешно отправлено! Я свяжусь с вами в ближайшее время.";
+        header('Location: index.php#contact');
         exit;
         
     } catch (Exception $e) {
         // Log error
         error_log("Ошибка в send_message.php: " . $e->getMessage());
         
-        // Return JSON error response for async handling
-        header('Content-Type: application/json');
-        echo json_encode([
-            'success' => false,
-            'message' => "Произошла ошибка при отправке сообщения. Пожалуйста, попробуйте позже или свяжитесь со мной другим способом.",
-            'debug' => [
-                'error' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine()
-            ]
-        ]);
+        // Show error to user
+        $_SESSION['error'] = "Произошла ошибка при отправке сообщения. Пожалуйста, попробуйте позже или свяжитесь со мной другим способом.";
+        header('Location: index.php#contact');
         exit;
     }
 } else {
