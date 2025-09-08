@@ -251,26 +251,21 @@ section h2::after {
 }
 
 .form-control {
-    background: rgba(255, 255, 255, 0.9) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    color: #212529 !important;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
     backdrop-filter: blur(10px);
 }
 
 .form-control:focus {
-    background: rgba(255, 255, 255, 1) !important;
-    border-color: #00d4ff !important;
-    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3) !important;
-    color: #212529 !important;
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #00d4ff;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+    color: #fff;
 }
 
 .form-control::placeholder {
-    color: #6c757d !important;
-}
-
-.form-label {
-    color: #e0e0e0 !important;
-    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
 }
 
 /* Кнопки */
@@ -335,4 +330,27 @@ footer {
     .nav-link {
         font-size: 0.9rem;
     }
+}
+
+.form-control {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: #212529 !important;
+    backdrop-filter: blur(10px);
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 1) !important;
+    border-color: #00d4ff !important;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3) !important;
+    color: #212529 !important;
+}
+
+.form-control::placeholder {
+    color: #6c757d !important;
+}
+
+.form-label {
+    color: #e0e0e0 !important;
+    font-weight: 500;
 }
