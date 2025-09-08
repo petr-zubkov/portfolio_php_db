@@ -173,18 +173,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             width: 100px;
             height: 100px;
             border-radius: 50%;
+            object-fit: cover;
             border: 3px solid #ddd;
             margin-top: 10px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .avatar-preview img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
         }
     </style>
 </head>
@@ -445,34 +436,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 img.src = '../assets/img/placeholder.jpg';
             }
         }
-// Функция для преобразования относительных путей в абсолютные перед отправкой формы
-function processFormBeforeSubmit() {
-    const avatarInput = document.getElementById('avatar');
-    const bgImageInput = document.getElementById('bg_image');
-    const siteUrl = 'https://zubkov.space';
-    
-    // Обрабатываем поле аватара
-    if (avatarInput.value) {
-        if (!avatarInput.value.startsWith('http://') && !avatarInput.value.startsWith('https://')) {
-            // Преобразуем относительный путь в абсолютный
-            avatarInput.value = siteUrl + '/' + avatarInput.value.replace(/^\/+/, '');
-        }
-    }
-    
-    // Обрабатываем поле фонового изображения
-    if (bgImageInput.value) {
-        if (!bgImageInput.value.startsWith('http://') && !bgImageInput.value.startsWith('https://')) {
-            // Преобразуем относительный путь в абсолютный
-            bgImageInput.value = siteUrl + '/' + bgImageInput.value.replace(/^\/+/, '');
-        }
-    }
-}
-
-// Добавляем обработчик на отправку формы
-document.getElementById('settingsForm')?.addEventListener('submit', function(e) {
-    // Обрабатываем поля перед отправкой
-    processFormBeforeSubmit();
-});
     </script>
 </body>
 </html>
