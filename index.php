@@ -1,271 +1,272 @@
 <?php
 session_start();
-require_once '../config.php';
+require_once 'config.php';
 
-// Проверка авторизации
-if (!isset($_SESSION['admin'])) {
-    header('Location: auth.php');
-    exit;
-}
+// Получаем данные из БД
+$projects_result = $conn->query("SELECT * FROM projects ORDER BY created_at DESC");
+$projects = $projects_result->fetch_all(MYSQLI_ASSOC);
 
-// Получаем статистику
-$projects_count = $conn->query("SELECT COUNT(*) as count FROM projects")->fetch_assoc()['count'];
-$skills_count = $conn->query("SELECT COUNT(*) as count FROM skills")->fetch_assoc()['count'];
-$themes_count = $conn->query("SELECT COUNT(*) as count FROM themes")->fetch_assoc()['count'];
+$skills_result = $conn->query("SELECT * FROM skills");
+$skills = $skills_result->fetch_all(MYSQLI_ASSOC);
 
-// Получаем активную тему
-$active_theme_result = $conn->query("SELECT * FROM themes WHERE is_active = 1 LIMIT 1");
-$active_theme = $active_theme_result->fetch_assoc();
+$contact_result = $conn->query("SELECT * FROM contact LIMIT 1");
+$contact = $contact_result->fetch_assoc();
 
 // Получаем персональную информацию
 $personal_info_result = $conn->query("SELECT * FROM personal_info LIMIT 1");
 $personal_info = $personal_info_result->fetch_assoc();
-?>
 
+// Получаем активную тему
+$theme_result = $conn->query("SELECT * FROM themes WHERE is_active = 1 LIMIT 1");
+$theme = $theme_result->fetch_assoc();
+
+// Если нет активной темы, используем настройки по умолчанию
+if (!$theme) {
+    $settings_result = $conn->query("SELECT * FROM settings LIMIT 1");
+    $settings = $settings_result->fetch_assoc();
+    $theme = $settings;
+}
+
+// Если нет персональной информации, используем значения по умолчанию
+if (!$personal_info) {
+    $personal_info = [
+        'full_name' => 'Ваше имя',
+        'profession' => 'Ваша профессия',
+        'bio' => 'Расскажите о себе...',
+        'avatar' => 'assets/img/placeholder.jpg',
+        'location' => 'Ваш город',
+        'experience_years' => 0,
+        'projects_count' => 0,
+        'clients_count' => 0,
+        'social_links' => '{}'
+    ];
+} else {
+    // Декодируем социальные ссылки
+    $personal_info['social_links'] = json_decode($personal_info['social_links'] ?: '{}', true);
+}
+?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Админ-панель</title>
+    <title><?php echo htmlspecialchars($theme['site_title'] ?? 'Портфолио'); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="../assets/css/admin.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=<?php echo urlencode($theme['font_family']); ?>&display=swap" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    
+    <!-- Динамическая загрузка CSS темы -->
+    <?php if (!empty($theme['slug'])): ?>
+    <link href="assets/css/themes/<?php echo htmlspecialchars($theme['slug']); ?>.css" rel="stylesheet">
+    <?php endif; ?>
+    
+    <style>
+        :root {
+            --primary-color: <?php echo $theme['primary_color']; ?>;
+            --secondary-color: <?php echo $theme['secondary_color']; ?>;
+            --accent-color: <?php echo $theme['accent_color']; ?>;
+            --text-color: <?php echo $theme['text_color']; ?>;
+            --bg-color: <?php echo $theme['bg_color']; ?>;
+            --font-family: '<?php echo $theme['font_family']; ?>', sans-serif;
+        }
+        <?php if (!empty($theme['bg_image'])): ?>
+        body {
+            background-image: url('<?php echo htmlspecialchars($theme['bg_image']); ?>');
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        .content-wrapper {
+            background-color: rgba(<?php echo hex2rgb($theme['bg_color']); ?>, 0.95);
+        }
+        <?php endif; ?>
+    </style>
 </head>
 <body>
-    <div class="admin-container">
-        <?php include 'sidebar.php'; ?>
-        
-        <div class="admin-main">
-            <h2 class="mb-4">Панель управления</h2>
-            
-            <!-- Статистика -->
-            <div class="row mb-4">
-                <div class="col-md-3">
-                    <div class="card text-white bg-primary">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h4 class="card-title"><?php echo $projects_count; ?></h4>
-                                    <p class="card-text">Проектов</p>
-                                </div>
-                                <div>
-                                    <i class="fas fa-folder fa-2x"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+    <div class="content-wrapper">
+        <!-- Навигация -->
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+            <div class="container">
+                <a class="navbar-brand" href="#"><?php echo htmlspecialchars($theme['site_title'] ?? 'Портфолио'); ?></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="#about">Обо мне</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#skills">Навыки</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#portfolio">Портфолио</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#contact">Контакты</a></li>
+                        <?php if (isset($_SESSION['admin'])): ?>
+                        <li class="nav-item"><a class="nav-link" href="admin/">Админ-панель</a></li>
+                        <?php endif; ?>
+                    </ul>
                 </div>
-                <div class="col-md-3">
-                    <div class="card text-white bg-success">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h4 class="card-title"><?php echo $skills_count; ?></h4>
-                                    <p class="card-text">Навыков</p>
-                                </div>
-                                <div>
-                                    <i class="fas fa-star fa-2x"></i>
-                                </div>
-                            </div>
-                        </div>
+            </div>
+        </nav>
+
+        <!-- Hero секция -->
+        <section id="hero" class="hero-section">
+            <div class="container text-center">
+                <img src="<?php echo htmlspecialchars($personal_info['avatar']); ?>" alt="Аватар" class="hero-avatar mb-4">
+                <h1 class="display-4 mb-3"><?php echo htmlspecialchars($personal_info['full_name']); ?></h1>
+                <p class="lead mb-4"><?php echo htmlspecialchars($personal_info['profession']); ?></p>
+                <a href="#portfolio" class="btn btn-primary btn-lg">Смотреть работы</a>
+            </div>
+        </section>
+
+        <!-- Обо мне -->
+        <section id="about" class="py-5">
+            <div class="container">
+                <h2 class="text-center mb-5">Обо мне</h2>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p><?php echo nl2br(htmlspecialchars($personal_info['bio'])); ?></p>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card text-white bg-info">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h4 class="card-title"><?php echo $themes_count; ?></h4>
-                                    <p class="card-text">Тем</p>
-                                </div>
-                                <div>
-                                    <i class="fas fa-palette fa-2x"></i>
-                                </div>
+                    <div class="col-lg-6">
+                        <div class="about-stats">
+                            <div class="stat-item">
+                                <h3><?php echo htmlspecialchars($personal_info['experience_years']); ?>+</h3>
+                                <p>Лет опыта</p>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card text-white bg-warning">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <h4 class="card-title">
-                                        <?php echo $personal_info ? '✓' : '✗'; ?>
-                                    </h4>
-                                    <p class="card-text">Персональные данные</p>
-                                </div>
-                                <div>
-                                    <i class="fas fa-user fa-2x"></i>
-                                </div>
+                            <div class="stat-item">
+                                <h3><?php echo htmlspecialchars($personal_info['projects_count']); ?>+</h3>
+                                <p>Выполненных проектов</p>
+                            </div>
+                            <div class="stat-item">
+                                <h3><?php echo htmlspecialchars($personal_info['clients_count']); ?>+</h3>
+                                <p>Довольных клиентов</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Активная тема -->
-            <?php if ($active_theme): ?>
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Текущая активная тема</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <h6><?php echo htmlspecialchars($active_theme['name']); ?></h6>
-                                <p class="text-muted"><?php echo htmlspecialchars($active_theme['description']); ?></p>
-                                <div class="d-flex gap-2">
-                                    <span class="badge bg-primary">Основной: <?php echo $active_theme['primary_color']; ?></span>
-                                    <span class="badge bg-secondary">Вторичный: <?php echo $active_theme['secondary_color']; ?></span>
-                                    <span class="badge bg-danger">Акцент: <?php echo $active_theme['accent_color']; ?></span>
+        </section>
+
+        <!-- Навыки -->
+        <section id="skills" class="py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center mb-5">Навыки</h2>
+                <div class="row">
+                    <?php foreach ($skills as $skill): ?>
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="skill-card">
+                                <i class="<?php echo htmlspecialchars($skill['icon']); ?> fa-3x mb-3"></i>
+                                <h5><?php echo htmlspecialchars($skill['name']); ?></h5>
+                                <div class="progress">
+                                    <div class="progress-bar" style="width: <?php echo htmlspecialchars($skill['level']); ?>%"></div>
+                                </div>
+                                <small class="text-muted"><?php echo htmlspecialchars($skill['level']); ?>%</small>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </section>
+
+        <!-- Портфолио -->
+        <section id="portfolio" class="py-5">
+            <div class="container">
+                <h2 class="text-center mb-5">Портфолио</h2>
+                <div class="row">
+                    <?php foreach ($projects as $project): ?>
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="portfolio-card">
+                                <img src="<?php echo htmlspecialchars($project['image']); ?>" alt="<?php echo htmlspecialchars($project['title']); ?>">
+                                <div class="portfolio-overlay">
+                                    <h5><?php echo htmlspecialchars($project['title']); ?></h5>
+                                    <p><?php echo htmlspecialchars($project['description']); ?></p>
+                                    <a href="<?php echo htmlspecialchars($project['link']); ?>" class="btn btn-primary">Подробнее</a>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="text-center">
-                                    <div class="theme-preview mb-3" style="height: 80px; border-radius: 5px; display: flex; overflow: hidden;">
-                                        <div style="flex: 1; height: 100%; background-color: <?php echo $active_theme['primary_color']; ?>"></div>
-                                        <div style="flex: 1; height: 100%; background-color: <?php echo $active_theme['secondary_color']; ?>"></div>
-                                        <div style="flex: 1; height: 100%; background-color: <?php echo $active_theme['accent_color']; ?>"></div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </section>
+
+        <!-- Контакты -->
+        <section id="contact" class="py-5 bg-light">
+            <div class="container">
+                <h2 class="text-center mb-5">Контакты</h2>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h5>Email</h5>
+                                <p><?php echo htmlspecialchars($contact['email'] ?? 'your.email@example.com'); ?></p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h5>Телефон</h5>
+                                <p><?php echo htmlspecialchars($contact['phone'] ?? '+7 (999) 123-45-67'); ?></p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-telegram"></i>
+                            <div>
+                                <h5>Telegram</h5>
+                                <p><?php echo htmlspecialchars($contact['telegram'] ?? '@username'); ?></p>
+                            </div>
+                        </div>
+                        
+                        <!-- Социальные сети из персональной информации -->
+                        <?php if (!empty($personal_info['social_links'])): ?>
+                            <?php foreach ($personal_info['social_links'] as $platform => $url): ?>
+                                <?php if (!empty($url)): ?>
+                                    <div class="contact-item">
+                                        <i class="fab fa-<?php echo htmlspecialchars($platform); ?>"></i>
+                                        <div>
+                                            <h5><?php echo ucfirst(htmlspecialchars($platform)); ?></h5>
+                                            <p><a href="<?php echo htmlspecialchars($url); ?>" target="_blank"><?php echo htmlspecialchars($url); ?></a></p>
+                                        </div>
                                     </div>
-                                    <div style="font-family: '<?php echo $active_theme['font_family']; ?>', sans-serif; background: #f8f9fa; padding: 10px; border-radius: 5px;">
-                                        <?php echo htmlspecialchars($active_theme['font_family']); ?>
-                                    </div>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="contact-form">
+                            <h5 class="mb-4">Отправить сообщение</h5>
+                            <form id="contactForm" method="POST" action="send_message.php">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Ваше имя</label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php endif; ?>
-            
-            <!-- Персональная информация -->
-            <?php if ($personal_info): ?>
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Персональная информация</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <h6><?php echo htmlspecialchars($personal_info['full_name']); ?></h6>
-                                <p class="text-muted"><?php echo htmlspecialchars($personal_info['profession']); ?></p>
-                                <p class="small"><?php echo htmlspecialchars(substr($personal_info['bio'], 0, 100)) . '...'; ?></p>
-                                <div class="d-flex gap-2">
-                                    <span class="badge bg-info"><?php echo $personal_info['experience_years']; ?>+ лет опыта</span>
-                                    <span class="badge bg-success"><?php echo $personal_info['projects_count']; ?>+ проектов</span>
-                                    <span class="badge bg-warning"><?php echo $personal_info['clients_count']; ?>+ клиентов</span>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="text-center">
-                                    <img src="<?php echo htmlspecialchars($personal_info['avatar']); ?>" 
-                                         alt="Аватар" 
-                                         style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #ddd;"
-                                         onerror="this.src='../assets/img/placeholder.jpg'">
-                                    <p class="small mt-2"><?php echo htmlspecialchars($personal_info['location']); ?></p>
+                                <div class="mb-3">
+                                    <label for="message" class="form-label">Сообщение</label>
+                                    <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php else: ?>
-                <div class="card mb-4 border-warning">
-                    <div class="card-header bg-warning">
-                        <h5 class="mb-0">Персональная информация не настроена</h5>
-                    </div>
-                    <div class="card-body">
-                        <p class="text-muted">Пожалуйста, настройте вашу персональную информацию, чтобы она отображалась на сайте.</p>
-                        <a href="manage_personal_info.php" class="btn btn-warning">
-                            <i class="fas fa-user-edit"></i> Настроить персональную информацию
-                        </a>
-                    </div>
-                </div>
-            <?php endif; ?>
-            
-            <!-- Быстрые действия -->
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Быстрые действия</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <a href="manage_personal_info.php" class="btn btn-outline-primary w-100">
-                                <i class="fas fa-user"></i><br>
-                                Персональная информация
-                            </a>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <a href="manage_themes.php" class="btn btn-outline-primary w-100">
-                                <i class="fas fa-paint-brush"></i><br>
-                                Управление темами
-                            </a>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <a href="save_project.php" class="btn btn-outline-success w-100">
-                                <i class="fas fa-folder"></i><br>
-                                Управление проектами
-                            </a>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <a href="get_skill.php" class="btn btn-outline-info w-100">
-                                <i class="fas fa-star"></i><br>
-                                Управление навыками
-                            </a>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <a href="save_contact.php" class="btn btn-outline-warning w-100">
-                                <i class="fas fa-envelope"></i><br>
-                                Управление контактами
-                            </a>
+                                <button type="submit" class="btn btn-primary" id="submitBtn">
+                                    <span class="btn-text">Отправить</span>
+                                    <span class="btn-spinner d-none">
+                                        <span class="spinner-border spinner-border-sm me-2"></span>Отправка...
+                                    </span>
+                                </button>
+                            </form>
+                            <div id="formMessage"></div>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Последние проекты -->
-            <div class="card mt-4">
-                <div class="card-header">
-                    <h5 class="mb-0">Последние проекты</h5>
-                </div>
-                <div class="card-body">
-                    <?php
-                    $recent_projects = $conn->query("SELECT * FROM projects ORDER BY created_at DESC LIMIT 5");
-                    if ($recent_projects->num_rows > 0):
-                    ?>
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Название</th>
-                                        <th>Описание</th>
-                                        <th>Дата создания</th>
-                                        <th>Действия</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php while ($project = $recent_projects->fetch_assoc()): ?>
-                                        <tr>
-                                            <td><?php echo htmlspecialchars($project['title']); ?></td>
-                                            <td><?php echo htmlspecialchars(substr($project['description'], 0, 50)) . '...'; ?></td>
-                                            <td><?php echo date('d.m.Y', strtotime($project['created_at'])); ?></td>
-                                            <td>
-                                                <a href="save_project.php?edit=<?php echo $project['id']; ?>" class="btn btn-sm btn-primary">Редактировать</a>
-                                            </td>
-                                        </tr>
-                                    <?php endwhile; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    <?php else: ?>
-                        <p class="text-muted">Проекты еще не добавлены.</p>
-                    <?php endif; ?>
-                </div>
+        </section>
+
+        <!-- Футер -->
+        <footer class="bg-dark text-white py-4">
+            <div class="container text-center">
+                <p>© <?php echo date('Y'); ?> <?php echo htmlspecialchars($theme['site_title'] ?? 'Портфолио'); ?>. Все права защищены.</p>
             </div>
-        </div>
+        </footer>
     </div>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/script.js"></script>
 </body>
 </html>
