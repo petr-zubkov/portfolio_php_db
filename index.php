@@ -12,6 +12,10 @@ $skills = $skills_result->fetch_all(MYSQLI_ASSOC);
 $contact_result = $conn->query("SELECT * FROM contact LIMIT 1");
 $contact = $contact_result->fetch_assoc();
 
+// Получаем персональную информацию
+$personal_info_result = $conn->query("SELECT * FROM personal_info LIMIT 1");
+$personal_info = $personal_info_result->fetch_assoc();
+
 // Получаем активную тему
 $theme_result = $conn->query("SELECT * FROM themes WHERE is_active = 1 LIMIT 1");
 $theme = $theme_result->fetch_assoc();
@@ -21,6 +25,24 @@ if (!$theme) {
     $settings_result = $conn->query("SELECT * FROM settings LIMIT 1");
     $settings = $settings_result->fetch_assoc();
     $theme = $settings;
+}
+
+// Если нет персональной информации, используем значения по умолчанию
+if (!$personal_info) {
+    $personal_info = [
+        'full_name' => 'Ваше имя',
+        'profession' => 'Ваша профессия',
+        'bio' => 'Расскажите о себе...',
+        'avatar' => 'assets/img/placeholder.jpg',
+        'location' => 'Ваш город',
+        'experience_years' => 0,
+        'projects_count' => 0,
+        'clients_count' => 0,
+        'social_links' => '{}'
+    ];
+} else {
+    // Декодируем социальные ссылки
+    $personal_info['social_links'] = json_decode($personal_info['social_links'] ?: '{}', true);
 }
 ?>
 <!DOCTYPE html>
@@ -86,9 +108,9 @@ if (!$theme) {
         <!-- Hero секция -->
         <section id="hero" class="hero-section">
             <div class="container text-center">
-                <img src="<?php echo htmlspecialchars($theme['avatar'] ?? 'assets/img/placeholder.jpg'); ?>" alt="Аватар" class="hero-avatar mb-4">
-                <h1 class="display-4 mb-3"><?php echo htmlspecialchars($theme['hero_title'] ?? 'Верстальщик'); ?></h1>
-                <p class="lead mb-4"><?php echo htmlspecialchars($theme['hero_subtitle'] ?? 'Профессиональная верстка'); ?></p>
+                <img src="<?php echo htmlspecialchars($personal_info['avatar']); ?>" alt="Аватар" class="hero-avatar mb-4">
+                <h1 class="display-4 mb-3"><?php echo htmlspecialchars($personal_info['full_name']); ?></h1>
+                <p class="lead mb-4"><?php echo htmlspecialchars($personal_info['profession']); ?></p>
                 <a href="#portfolio" class="btn btn-primary btn-lg">Смотреть работы</a>
             </div>
         </section>
@@ -99,20 +121,20 @@ if (!$theme) {
                 <h2 class="text-center mb-5">Обо мне</h2>
                 <div class="row">
                     <div class="col-lg-6">
-                        <p><?php echo nl2br(htmlspecialchars($theme['about_text'] ?? 'Опытный верстальщик с многолетним стажем работы.')); ?></p>
+                        <p><?php echo nl2br(htmlspecialchars($personal_info['bio'])); ?></p>
                     </div>
                     <div class="col-lg-6">
                         <div class="about-stats">
                             <div class="stat-item">
-                                <h3><?php echo htmlspecialchars($theme['experience_years'] ?? '5'); ?>+</h3>
+                                <h3><?php echo htmlspecialchars($personal_info['experience_years']); ?>+</h3>
                                 <p>Лет опыта</p>
                             </div>
                             <div class="stat-item">
-                                <h3><?php echo htmlspecialchars($theme['projects_count'] ?? '100'); ?>+</h3>
+                                <h3><?php echo htmlspecialchars($personal_info['projects_count']); ?>+</h3>
                                 <p>Выполненных проектов</p>
                             </div>
                             <div class="stat-item">
-                                <h3><?php echo htmlspecialchars($theme['clients_count'] ?? '50'); ?>+</h3>
+                                <h3><?php echo htmlspecialchars($personal_info['clients_count']); ?>+</h3>
                                 <p>Довольных клиентов</p>
                             </div>
                         </div>
@@ -190,6 +212,21 @@ if (!$theme) {
                                 <p><?php echo htmlspecialchars($contact['telegram'] ?? '@username'); ?></p>
                             </div>
                         </div>
+                        
+                        <!-- Социальные сети из персональной информации -->
+                        <?php if (!empty($personal_info['social_links'])): ?>
+                            <?php foreach ($personal_info['social_links'] as $platform => $url): ?>
+                                <?php if (!empty($url)): ?>
+                                    <div class="contact-item">
+                                        <i class="fab fa-<?php echo htmlspecialchars($platform); ?>"></i>
+                                        <div>
+                                            <h5><?php echo ucfirst(htmlspecialchars($platform)); ?></h5>
+                                            <p><a href="<?php echo htmlspecialchars($url); ?>" target="_blank"><?php echo htmlspecialchars($url); ?></a></p>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
                     <div class="col-lg-6">
                         <div class="contact-form">
@@ -218,7 +255,7 @@ if (!$theme) {
         <!-- Футер -->
         <footer class="bg-dark text-white py-4">
             <div class="container text-center">
-                <p>&copy; <?php echo date('Y'); ?> <?php echo htmlspecialchars($theme['site_title'] ?? 'Портфолио'); ?>. Все права защищены.</p>
+                <p>© <?php echo date('Y'); ?> <?php echo htmlspecialchars($theme['site_title'] ?? 'Портфолио'); ?>. Все права защищены.</p>
             </div>
         </footer>
     </div>
