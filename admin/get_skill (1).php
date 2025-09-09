@@ -10,33 +10,6 @@ if (!isset($_SESSION['admin'])) {
 
 // Обработка формы
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Обработка удаления навыка
-    if (isset($_POST['delete']) && $_POST['delete'] === 'true' && isset($_POST['id'])) {
-        $id = $_POST['id'];
-        try {
-            $stmt = $conn->prepare("DELETE FROM skills WHERE id = ?");
-            $stmt->bind_param("i", $id);
-            if ($stmt->execute()) {
-                echo json_encode([
-                    'success' => true,
-                    'message' => 'Навык успешно удален'
-                ]);
-            } else {
-                echo json_encode([
-                    'success' => false,
-                    'message' => 'Ошибка при удалении навыка'
-                ]);
-            }
-        } catch (Exception $e) {
-            echo json_encode([
-                'success' => false,
-                'message' => 'Ошибка при удалении навыка: ' . $e->getMessage()
-            ]);
-        }
-        exit;
-    }
-    
-    // Обработка добавления/обновления навыка
     $name = $_POST['name'] ?? '';
     $icon = $_POST['icon'] ?? '';
     $level = $_POST['level'] ?? 0;
@@ -59,60 +32,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
     
-    try {
-        if ($id) {
-            // Обновление навыка
-            $stmt = $conn->prepare("UPDATE skills SET name=?, icon=?, level=? WHERE id=?");
-            $stmt->bind_param("ssii", $name, $icon, $level, $id);
-            $message = 'Навык успешно обновлен';
-        } else {
-            // Добавление нового навыка
-            $stmt = $conn->prepare("INSERT INTO skills (name, icon, level) VALUES (?, ?, ?)");
-            $stmt->bind_param("ssi", $name, $icon, $level);
-            $message = 'Навык успешно добавлен';
-        }
-        
-        if ($stmt->execute()) {
-            echo json_encode([
-                'success' => true,
-                'message' => $message
-            ]);
-        } else {
-            echo json_encode([
-                'success' => false,
-                'message' => 'Ошибка при сохранении навыка: ' . $conn->error
-            ]);
-        }
-    } catch (Exception $e) {
+    if ($id) {
+        // Обновление навыка
+        $stmt = $conn->prepare("UPDATE skills SET name=?, icon=?, level=? WHERE id=?");
+        $stmt->bind_param("ssii", $name, $icon, $level, $id);
+        $message = 'Навык успешно обновлен';
+    } else {
+        // Добавление нового навыка
+        $stmt = $conn->prepare("INSERT INTO skills (name, icon, level) VALUES (?, ?, ?)");
+        $stmt->bind_param("ssi", $name, $icon, $level);
+        $message = 'Навык успешно добавлен';
+    }
+    
+    if ($stmt->execute()) {
+        echo json_encode([
+            'success' => true,
+            'message' => $message
+        ]);
+    } else {
         echo json_encode([
             'success' => false,
-            'message' => 'Ошибка при сохранении навыка: ' . $e->getMessage()
+            'message' => 'Ошибка при сохранении навыка'
         ]);
     }
     exit;
 }
 
 // Получаем навыки для отображения
-try {
-    $skills_result = $conn->query("SELECT * FROM skills ORDER BY name");
-    $skills = $skills_result->fetch_all(MYSQLI_ASSOC);
-} catch (Exception $e) {
-    die("Ошибка при получении навыков: " . $e->getMessage());
-}
+$skills_result = $conn->query("SELECT * FROM skills ORDER BY name");
+$skills = $skills_result->fetch_all(MYSQLI_ASSOC);
 
 // Редактирование навыка
 $edit_skill = null;
 if (isset($_GET['edit'])) {
     $edit_id = $_GET['edit'];
-    try {
-        $stmt = $conn->prepare("SELECT * FROM skills WHERE id = ?");
-        $stmt->bind_param("i", $edit_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $edit_skill = $result->fetch_assoc();
-    } catch (Exception $e) {
-        die("Ошибка при получении навыка для редактирования: " . $e->getMessage());
-    }
+    $stmt = $conn->prepare("SELECT * FROM skills WHERE id = ?");
+    $stmt->bind_param("i", $edit_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $edit_skill = $result->fetch_assoc();
 }
 ?>
 
@@ -176,7 +134,6 @@ if (isset($_GET['edit'])) {
                                 <span id="levelDisplay" class="fw-bold"><?php echo htmlspecialchars($edit_skill['level'] ?? 50); ?>%</span>
                                 <span>100%</span>
                             </div>
-                            <div class="form-text">Текущее значение: <strong id="levelValue"><?php echo htmlspecialchars($edit_skill['level'] ?? 50); ?></strong>%</div>
                         </div>
                         
                         <div class="mb-3">
@@ -251,11 +208,6 @@ if (isset($_GET['edit'])) {
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="alert alert-info mt-3">
-                            <h6><i class="fas fa-info-circle"></i> Подсказка</h6>
-                            <p class="small mb-0">Используйте ползунок для установки уровня владения навыком. Изменения сохраняются автоматически при нажатии кнопки сохранения.</p>
-                        </div>
                     </div>
                 </div>
             </form>
@@ -311,19 +263,12 @@ if (isset($_GET['edit'])) {
             
             const formData = new FormData(this);
             
-            // Добавляем отладочную информацию
-            console.log('Отправка данных:');
-            for (let [key, value] of formData.entries()) {
-                console.log(key + ': ' + value);
-            }
-            
             fetch('get_skill.php', {
                 method: 'POST',
                 body: formData
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Ответ сервера:', data);
                 if (data.success) {
                     showAlert('success', data.message);
                     setTimeout(() => {
@@ -334,8 +279,8 @@ if (isset($_GET['edit'])) {
                 }
             })
             .catch(error => {
+                showAlert('danger', 'Произошла ошибка');
                 console.error('Error:', error);
-                showAlert('danger', 'Произошла ошибка при отправке запроса');
             })
             .finally(() => {
                 saveBtn.disabled = false;
@@ -377,17 +322,12 @@ if (isset($_GET['edit'])) {
                     } else {
                         showAlert('danger', data.message);
                     }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showAlert('danger', 'Произошла ошибка при удалении');
                 });
             }
         }
         
         function updateLevelDisplay(value) {
             document.getElementById('levelDisplay').textContent = value + '%';
-            document.getElementById('levelValue').textContent = value;
             document.getElementById('previewLevel').textContent = value + '%';
             document.getElementById('previewProgress').style.width = value + '%';
         }
@@ -399,16 +339,6 @@ if (isset($_GET['edit'])) {
         
         document.getElementById('icon').addEventListener('change', function() {
             document.getElementById('previewIcon').className = this.value + ' fa-3x mb-3';
-        });
-        
-        // Дополнительная проверка уровня при изменении
-        document.getElementById('level').addEventListener('input', function() {
-            const value = parseInt(this.value);
-            if (value >= 0 && value <= 100) {
-                this.style.borderColor = '';
-            } else {
-                this.style.borderColor = '#dc3545';
-            }
         });
     </script>
 </body>

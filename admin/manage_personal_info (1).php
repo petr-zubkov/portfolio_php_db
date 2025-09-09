@@ -16,15 +16,10 @@ try {
     if (!$personal_info) {
         // Если нет записи, создаем с настройками по умолчанию
         $default_social_links = json_encode([
-            'vk' => 'https://vk.com',
-            'tenchat' => 'https://tenchat.ru',
-            'ok' => 'https://ok.ru/profile/377654399513',
-            'github' => 'https://github.com/petr-zubkov/',
+            'github' => '',
             'linkedin' => '',
             'twitter' => '',
-            'website' => '',
-            'additional_websites' => [],
-            'other_links' => []
+            'website' => ''
         ]);
         
         $insert_query = "INSERT INTO personal_info (full_name, profession, bio, avatar, email, phone, telegram, location, experience_years, projects_count, clients_count, social_links) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -77,43 +72,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // Социальные ссылки
     $social_links_data = [
-        'vk' => $_POST['vk'] ?? '',
-        'tenchat' => $_POST['tenchat'] ?? '',
-        'ok' => $_POST['ok'] ?? '',
         'github' => $_POST['github'] ?? '',
         'linkedin' => $_POST['linkedin'] ?? '',
         'twitter' => $_POST['twitter'] ?? '',
         'website' => $_POST['website'] ?? ''
     ];
-    
-    // Дополнительные веб-сайты
-    $additional_websites = [];
-    if (isset($_POST['website_name']) && isset($_POST['website_url'])) {
-        foreach ($_POST['website_name'] as $index => $name) {
-            if (!empty($name) && !empty($_POST['website_url'][$index])) {
-                $additional_websites[] = [
-                    'name' => $name,
-                    'url' => $_POST['website_url'][$index]
-                ];
-            }
-        }
-    }
-    $social_links_data['additional_websites'] = $additional_websites;
-    
-    // Другие ссылки
-    $other_links = [];
-    if (isset($_POST['other_name']) && isset($_POST['other_url'])) {
-        foreach ($_POST['other_name'] as $index => $name) {
-            if (!empty($name) && !empty($_POST['other_url'][$index])) {
-                $other_links[] = [
-                    'name' => $name,
-                    'url' => $_POST['other_url'][$index]
-                ];
-            }
-        }
-    }
-    $social_links_data['other_links'] = $other_links;
-    
     $social_links_json = json_encode($social_links_data);
     
     // Валидация обязательных полей
@@ -208,19 +171,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .required-field::after {
             content: " *";
             color: #dc3545;
-        }
-        .dynamic-section {
-            background-color: #f8f9fa;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-        .dynamic-row {
-            background-color: white;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #dee2e6;
         }
     </style>
 </head>
@@ -328,36 +278,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         
                         <div class="social-links-grid">
                             <div class="mb-3">
-                                <label for="vk" class="form-label">VK</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fab fa-vk"></i></span>
-                                    <input type="url" class="form-control" id="vk" name="vk" 
-                                           value="<?php echo htmlspecialchars($social_links['vk'] ?? ''); ?>" 
-                                           placeholder="https://vk.com/username">
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="tenchat" class="form-label">Tenchat</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fas fa-comments"></i></span>
-                                    <input type="url" class="form-control" id="tenchat" name="tenchat" 
-                                           value="<?php echo htmlspecialchars($social_links['tenchat'] ?? ''); ?>" 
-                                           placeholder="https://tenchat.ru/username">
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
-                                <label for="ok" class="form-label">OK</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fab fa-odnoklassniki"></i></span>
-                                    <input type="url" class="form-control" id="ok" name="ok" 
-                                           value="<?php echo htmlspecialchars($social_links['ok'] ?? ''); ?>" 
-                                           placeholder="https://ok.ru/profile/...">
-                                </div>
-                            </div>
-                            
-                            <div class="mb-3">
                                 <label for="github" class="form-label">GitHub</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fab fa-github"></i></span>
@@ -396,68 +316,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                            placeholder="https://yourwebsite.com">
                                 </div>
                             </div>
-                        </div>
-                        
-                        <h5 class="mb-3 mt-4">Дополнительные веб-сайты</h5>
-                        <div class="dynamic-section">
-                            <div id="additionalWebsites">
-                                <?php 
-                                $additional_websites = $social_links['additional_websites'] ?? [];
-                                foreach ($additional_websites as $index => $website): 
-                                ?>
-                                    <div class="row mb-3 additional-website-row dynamic-row">
-                                        <div class="col-md-5">
-                                            <input type="text" class="form-control" name="website_name[]" 
-                                                   placeholder="Название сайта" 
-                                                   value="<?php echo htmlspecialchars($website['name'] ?? ''); ?>">
-                                        </div>
-                                        <div class="col-md-5">
-                                            <input type="url" class="form-control" name="website_url[]" 
-                                                   placeholder="https://website.com" 
-                                                   value="<?php echo htmlspecialchars($website['url'] ?? ''); ?>">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <button type="button" class="btn btn-danger btn-sm" onclick="removeWebsiteRow(this)">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
-                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="addWebsiteRow()">
-                                <i class="fas fa-plus"></i> Добавить веб-сайт
-                            </button>
-                        </div>
-                        
-                        <h5 class="mb-3 mt-4">Другие ссылки</h5>
-                        <div class="dynamic-section">
-                            <div id="otherLinks">
-                                <?php 
-                                $other_links = $social_links['other_links'] ?? [];
-                                foreach ($other_links as $index => $link): 
-                                ?>
-                                    <div class="row mb-3 other-link-row dynamic-row">
-                                        <div class="col-md-5">
-                                            <input type="text" class="form-control" name="other_name[]" 
-                                                   placeholder="Название ссылки" 
-                                                   value="<?php echo htmlspecialchars($link['name'] ?? ''); ?>">
-                                        </div>
-                                        <div class="col-md-5">
-                                            <input type="url" class="form-control" name="other_url[]" 
-                                                   placeholder="https://link.com" 
-                                                   value="<?php echo htmlspecialchars($link['url'] ?? ''); ?>">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <button type="button" class="btn btn-danger btn-sm" onclick="removeOtherLinkRow(this)">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
-                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="addOtherLinkRow()">
-                                <i class="fas fa-plus"></i> Добавить другую ссылку
-                            </button>
                         </div>
                     </div>
                     
@@ -533,123 +391,85 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         
-        // Обновление превью имени и профессии
-        document.getElementById('full_name').addEventListener('input', function() {
-            document.getElementById('previewName').textContent = this.value || 'Ваше имя';
-        });
-        
-        document.getElementById('profession').addEventListener('input', function() {
-            document.getElementById('previewProfession').textContent = this.value || 'Ваша профессия';
-        });
-        
-        document.getElementById('location').addEventListener('input', function() {
-            const locationElement = document.getElementById('previewLocation');
-            locationElement.innerHTML = '<i class="fas fa-map-marker-alt"></i> ' + (this.value || 'Ваш город');
-        });
-        
-        // Функции для динамического добавления/удаления веб-сайтов
-        function addWebsiteRow() {
-            const container = document.getElementById('additionalWebsites');
-            const row = document.createElement('div');
-            row.className = 'row mb-3 additional-website-row dynamic-row';
-            row.innerHTML = `
-                <div class="col-md-5">
-                    <input type="text" class="form-control" name="website_name[]" placeholder="Название сайта">
-                </div>
-                <div class="col-md-5">
-                    <input type="url" class="form-control" name="website_url[]" placeholder="https://website.com">
-                </div>
-                <div class="col-md-2">
-                    <button type="button" class="btn btn-danger btn-sm" onclick="removeWebsiteRow(this)">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            `;
-            container.appendChild(row);
+        // Обновление превью текста
+        function updateTextPreview() {
+            const name = document.getElementById('full_name').value || 'Ваше имя';
+            const profession = document.getElementById('profession').value || 'Ваша профессия';
+            const location = document.getElementById('location').value || 'Ваш город';
+            
+            document.getElementById('previewName').textContent = name;
+            document.getElementById('previewProfession').textContent = profession;
+            document.getElementById('previewLocation').innerHTML = '<i class="fas fa-map-marker-alt"></i> ' + location;
         }
         
-        function removeWebsiteRow(button) {
-            button.closest('.additional-website-row').remove();
-        }
-        
-        // Функции для динамического добавления/удаления других ссылок
-        function addOtherLinkRow() {
-            const container = document.getElementById('otherLinks');
-            const row = document.createElement('div');
-            row.className = 'row mb-3 other-link-row dynamic-row';
-            row.innerHTML = `
-                <div class="col-md-5">
-                    <input type="text" class="form-control" name="other_name[]" placeholder="Название ссылки">
-                </div>
-                <div class="col-md-5">
-                    <input type="url" class="form-control" name="other_url[]" placeholder="https://link.com">
-                </div>
-                <div class="col-md-2">
-                    <button type="button" class="btn btn-danger btn-sm" onclick="removeOtherLinkRow(this)">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            `;
-            container.appendChild(row);
-        }
-        
-        function removeOtherLinkRow(button) {
-            button.closest('.other-link-row').remove();
-        }
+        // Добавляем обработчики событий для обновления превью
+        document.getElementById('full_name').addEventListener('input', updateTextPreview);
+        document.getElementById('profession').addEventListener('input', updateTextPreview);
+        document.getElementById('location').addEventListener('input', updateTextPreview);
         
         // Обработка формы
         document.getElementById('personalInfoForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Показываем индикатор загрузки
             const submitBtn = this.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
-            
-            submitBtn.disabled = true;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Сохранение...';
+            submitBtn.disabled = true;
             
-            const formData = new FormData(this);
-            
-            fetch('manage_personal_info.php', {
+            fetch('', {
                 method: 'POST',
-                body: formData
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams(data)
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    showAlert('success', data.message);
+                    // Показываем уведомление об успехе
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-success alert-dismissible fade show';
+                    alertDiv.innerHTML = `
+                        <i class="fas fa-check-circle"></i> ${data.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    `;
+                    document.querySelector('.admin-main').insertBefore(alertDiv, document.querySelector('.admin-main').firstChild);
+                    
+                    // Автоматически скрываем уведомление через 5 секунд
                     setTimeout(() => {
-                        window.location.href = 'index.php';
-                    }, 1500);
+                        alertDiv.remove();
+                    }, 5000);
                 } else {
-                    showAlert('danger', data.message);
+                    // Показываем уведомление об ошибке
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-danger alert-dismissible fade show';
+                    alertDiv.innerHTML = `
+                        <i class="fas fa-exclamation-circle"></i> ${data.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    `;
+                    document.querySelector('.admin-main').insertBefore(alertDiv, document.querySelector('.admin-main').firstChild);
                 }
             })
             .catch(error => {
-                showAlert('danger', 'Произошла ошибка');
                 console.error('Error:', error);
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-danger alert-dismissible fade show';
+                alertDiv.innerHTML = `
+                    <i class="fas fa-exclamation-circle"></i> Произошла ошибка при сохранении
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                document.querySelector('.admin-main').insertBefore(alertDiv, document.querySelector('.admin-main').firstChild);
             })
             .finally(() => {
-                submitBtn.disabled = false;
+                // Восстанавливаем кнопку
                 submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
             });
         });
-        
-        function showAlert(type, message) {
-            const alertDiv = document.createElement('div');
-            alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
-            alertDiv.innerHTML = `
-                ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            `;
-            
-            const form = document.getElementById('personalInfoForm');
-            form.parentNode.insertBefore(alertDiv, form);
-            
-            setTimeout(() => {
-                alertDiv.classList.remove('show');
-                setTimeout(() => alertDiv.remove(), 150);
-            }, 5000);
-        }
     </script>
 </body>
 </html>

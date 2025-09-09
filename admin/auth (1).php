@@ -5,30 +5,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'] ?? '';
     $password = $_POST['password'] ?? '';
     
-    // Проверка логина
-    if ($username !== 'admin') {
-        $error = 'Неверный логин или пароль';
+    // Простая проверка (в реальном проекте нужно использовать более безопасную аутентификацию)
+    if ($username === 'admin' && $password === 'admin123') {
+        $_SESSION['admin'] = true;
+        header('Location: index.php');
+        exit;
     } else {
-        // Проверка пароля
-        $password_file = '../admin_password.txt';
-        
-        if (file_exists($password_file)) {
-            // Используем сохраненный пароль
-            $saved_hash = file_get_contents($password_file);
-            if (password_verify($password, $saved_hash)) {
-                $_SESSION['admin'] = true;
-                header('Location: index.php');
-                exit;
-            }
-        } else {
-            // Используем пароль по умолчанию
-            if ($password === 'admin123') {
-                $_SESSION['admin'] = true;
-                header('Location: index.php');
-                exit;
-            }
-        }
-        
         $error = 'Неверный логин или пароль';
     }
 }
@@ -101,6 +83,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit" class="btn btn-primary w-100">Войти</button>
         </form>
         
+        <div class="text-center mt-3">
+            <small class="text-muted">Демонстрационная версия: admin / admin123</small>
+        </div>
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

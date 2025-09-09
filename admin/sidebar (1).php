@@ -24,9 +24,6 @@
         <a class="nav-link" href="save_contact.php">
             <i class="fas fa-envelope"></i> Контакты
         </a>
-        <a class="nav-link" href="change_password.php">
-            <i class="fas fa-key"></i> Сменить пароль
-        </a>
         <a class="nav-link" href="logout.php">
             <i class="fas fa-sign-out-alt"></i> Выход
         </a>
