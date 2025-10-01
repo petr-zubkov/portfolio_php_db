@@ -302,3 +302,698 @@
 [2025-08-23 16:49:45] SQL запрос: UPDATE settings SET              site_title = ?, hero_title = ?, hero_subtitle = ?, avatar = ?, about_text = ?,             primary_color = ?, secondary_color = ?, accent_color = ?, text_color = ?, bg_color = ?,             font_family = ?, bg_image = ?, experience_years = ?, projects_count = ?, clients_count = ?             WHERE id = ?
 [2025-08-23 16:49:45] Запрос подготовлен успешно, привязываем параметры...
 [2025-08-23 16:49:45] Приведенные типы: experience_years=5, projects_count=100, clients_count=50
+[2025-08-26 19:15:44] === Начало обработки save_settings_fixed.php ===
+[2025-08-26 19:15:44] Метод: POST
+[2025-08-26 19:15:44] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","hero_subtitle":"\u0432\u0435\u0440\u0441\u0442\u043a\u0430 \u043a\u043d\u0438\u0433","about_text":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","experience_years":"29","projects_count":"100","clients_count":"50"}
+[2025-08-26 19:15:44] ID: 1
+[2025-08-26 19:15:44] Site Title: Портфолио
+[2025-08-26 19:15:44] Hero Title: Дизайнер
+[2025-08-26 19:15:44] About Text length: 16
+[2025-08-26 19:15:44] Подключение к БД OK
+[2025-08-26 19:15:44] Транзакция начата
+[2025-08-26 19:15:44] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-26 19:15:44] Параметры: experience_years=29, projects_count=100, clients_count=50
+[2025-08-26 19:16:01] === Начало обработки save_settings_fixed.php ===
+[2025-08-26 19:16:01] Метод: POST
+[2025-08-26 19:16:01] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","hero_subtitle":"\u0432\u0435\u0440\u0441\u0442\u043a\u0430 \u043a\u043d\u0438\u0433","about_text":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","experience_years":"29","projects_count":"100","clients_count":"50"}
+[2025-08-26 19:16:01] ID: 1
+[2025-08-26 19:16:01] Site Title: Портфолио
+[2025-08-26 19:16:01] Hero Title: Дизайнер
+[2025-08-26 19:16:01] About Text length: 16
+[2025-08-26 19:16:01] Подключение к БД OK
+[2025-08-26 19:16:01] Транзакция начата
+[2025-08-26 19:16:01] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-26 19:16:01] Параметры: experience_years=29, projects_count=100, clients_count=50
+[2025-08-26 19:16:13] === Начало обработки save_settings_fixed.php ===
+[2025-08-26 19:16:13] Метод: POST
+[2025-08-26 19:16:13] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","hero_subtitle":"\u0432\u0435\u0440\u0441\u0442\u043a\u0430 \u043a\u043d\u0438\u0433","about_text":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","experience_years":"29","projects_count":"100","clients_count":"50"}
+[2025-08-26 19:16:13] ID: 1
+[2025-08-26 19:16:13] Site Title: Портфолио
+[2025-08-26 19:16:13] Hero Title: Дизайнер
+[2025-08-26 19:16:13] About Text length: 16
+[2025-08-26 19:16:13] Подключение к БД OK
+[2025-08-26 19:16:13] Транзакция начата
+[2025-08-26 19:16:13] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-26 19:16:13] Параметры: experience_years=29, projects_count=100, clients_count=50
+[2025-08-26 19:16:23] === Начало обработки save_settings_fixed.php ===
+[2025-08-26 19:16:23] Метод: POST
+[2025-08-26 19:16:23] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","hero_subtitle":"\u0432\u0435\u0440\u0441\u0442\u043a\u0430 \u043a\u043d\u0438\u0433","about_text":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","experience_years":"29","projects_count":"100","clients_count":"50"}
+[2025-08-26 19:16:23] ID: 1
+[2025-08-26 19:16:23] Site Title: Портфолио
+[2025-08-26 19:16:23] Hero Title: Дизайнер
+[2025-08-26 19:16:23] About Text length: 16
+[2025-08-26 19:16:23] Подключение к БД OK
+[2025-08-26 19:16:23] Транзакция начата
+[2025-08-26 19:16:23] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-26 19:16:23] Параметры: experience_years=29, projects_count=100, clients_count=50
+[2025-08-26 19:16:31] === Начало обработки save_settings_fixed.php ===
+[2025-08-26 19:16:31] Метод: POST
+[2025-08-26 19:16:31] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","hero_subtitle":"\u0432\u0435\u0440\u0441\u0442\u043a\u0430 \u043a\u043d\u0438\u0433","about_text":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","experience_years":"29","projects_count":"100","clients_count":"50"}
+[2025-08-26 19:16:31] ID: 1
+[2025-08-26 19:16:31] Site Title: Портфолио
+[2025-08-26 19:16:31] Hero Title: Дизайнер
+[2025-08-26 19:16:31] About Text length: 16
+[2025-08-26 19:16:31] Подключение к БД OK
+[2025-08-26 19:16:31] Транзакция начата
+[2025-08-26 19:16:31] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-26 19:16:31] Параметры: experience_years=29, projects_count=100, clients_count=50
+[2025-08-26 19:21:51] === Начало обработки save_settings_fixed.php ===
+[2025-08-26 19:21:51] Метод не POST: GET
+[2025-08-26 19:21:51] Фатальная ошибка: Only POST method allowed
+[2025-08-26 19:21:51] Ошибка ответа: {"success":false,"message":"Only POST method allowed"}
+[2025-08-26 19:21:51] === Завершение обработки ===
+[2025-08-26 19:27:58] === Начало обработки save_settings_fixed.php ===
+[2025-08-26 19:27:58] Метод: POST
+[2025-08-26 19:27:58] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","hero_subtitle":"\u0432\u0435\u0440\u0441\u0442\u043a\u0430 \u043a\u043d\u0438\u0433","about_text":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","experience_years":"29","projects_count":"100","clients_count":"50"}
+[2025-08-26 19:27:58] ID: 1
+[2025-08-26 19:27:58] Site Title: Портфолио
+[2025-08-26 19:27:58] Hero Title: Дизайнер
+[2025-08-26 19:27:58] About Text length: 16
+[2025-08-26 19:27:58] Подключение к БД OK
+[2025-08-26 19:27:58] Транзакция начата
+[2025-08-26 19:27:58] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-26 19:27:58] Параметры: experience_years=29, projects_count=100, clients_count=50
+[2025-08-26 19:56:12] === Начало обработки save_settings_fixed.php ===
+[2025-08-26 19:56:12] Метод: POST
+[2025-08-26 19:56:12] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","hero_subtitle":"\u0432\u0435\u0440\u0441\u0442\u043a\u0430 \u043a\u043d\u0438\u0433","about_text":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","experience_years":"29","projects_count":"100","clients_count":"50"}
+[2025-08-26 19:56:12] ID: 1
+[2025-08-26 19:56:12] Site Title: Портфолио
+[2025-08-26 19:56:12] Hero Title: Дизайнер
+[2025-08-26 19:56:12] About Text length: 16
+[2025-08-26 19:56:12] Подключение к БД OK
+[2025-08-26 19:56:12] Транзакция начата
+[2025-08-26 19:56:12] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-26 19:56:12] Параметры: experience_years=29, projects_count=100, clients_count=50
+[2025-08-26 19:57:09] === Начало обработки save_settings_fixed.php ===
+[2025-08-26 19:57:09] Метод: POST
+[2025-08-26 19:57:09] POST данные: {"id":"1","site_title":"\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0441\u0430\u0439\u0442","hero_title":"\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0433\u0435\u0440\u043e\u0439","hero_subtitle":"\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u043f\u043e\u0434\u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a","about_text":"\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0442\u0435\u043a\u0441\u0442 \u043e\u0431\u043e \u043c\u043d\u0435","experience_years":"5","projects_count":"100","clients_count":"50"}
+[2025-08-26 19:57:09] ID: 1
+[2025-08-26 19:57:09] Site Title: Тестовый сайт
+[2025-08-26 19:57:09] Hero Title: Тестовый герой
+[2025-08-26 19:57:09] About Text length: 41
+[2025-08-26 19:57:09] Подключение к БД OK
+[2025-08-26 19:57:09] Транзакция начата
+[2025-08-26 19:57:09] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-26 19:57:09] Параметры: experience_years=5, projects_count=100, clients_count=50
+[2025-08-26 19:57:24] === Начало обработки save_settings_fixed.php ===
+[2025-08-26 19:57:24] Метод: POST
+[2025-08-26 19:57:24] POST данные: {"id":"1","site_title":"\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0441\u0430\u0439\u0442","hero_title":"\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0433\u0435\u0440\u043e\u0439","hero_subtitle":"\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u043f\u043e\u0434\u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a","about_text":"\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0442\u0435\u043a\u0441\u0442 \u043e\u0431\u043e \u043c\u043d\u0435","experience_years":"5","projects_count":"100","clients_count":"50"}
+[2025-08-26 19:57:24] ID: 1
+[2025-08-26 19:57:24] Site Title: Тестовый сайт
+[2025-08-26 19:57:24] Hero Title: Тестовый герой
+[2025-08-26 19:57:24] About Text length: 41
+[2025-08-26 19:57:24] Подключение к БД OK
+[2025-08-26 19:57:24] Транзакция начата
+[2025-08-26 19:57:24] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-26 19:57:24] Параметры: experience_years=5, projects_count=100, clients_count=50
+[2025-08-28 17:45:07] === Начало обработки save_settings_fixed.php ===
+[2025-08-28 17:45:07] Метод: POST
+[2025-08-28 17:45:07] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","hero_subtitle":"\u0432\u0435\u0440\u0441\u0442\u043a\u0430 \u043a\u043d\u0438\u0433","about_text":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","experience_years":"29","projects_count":"100","clients_count":"50"}
+[2025-08-28 17:45:07] ID: 1
+[2025-08-28 17:45:07] Site Title: Портфолио
+[2025-08-28 17:45:07] Hero Title: Дизайнер
+[2025-08-28 17:45:07] About Text length: 16
+[2025-08-28 17:45:07] Подключение к БД OK
+[2025-08-28 17:45:07] Транзакция начата
+[2025-08-28 17:45:07] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-28 17:45:07] Параметры: experience_years=29, projects_count=100, clients_count=50
+[2025-08-28 17:47:47] === Начало обработки save_settings_fixed.php ===
+[2025-08-28 17:47:47] Метод не POST: GET
+[2025-08-28 17:47:47] Фатальная ошибка: Only POST method allowed
+[2025-08-28 17:47:47] Ошибка ответа: {"success":false,"message":"Only POST method allowed"}
+[2025-08-28 17:47:47] === Завершение обработки ===
+[2025-08-28 17:48:17] === Начало обработки save_settings_fixed.php ===
+[2025-08-28 17:48:17] Метод: POST
+[2025-08-28 17:48:17] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","hero_subtitle":"\u0432\u0435\u0440\u0441\u0442\u043a\u0430 \u043a\u043d\u0438\u0433","about_text":"","experience_years":"29","projects_count":"100","clients_count":"50"}
+[2025-08-28 17:48:17] ID: 1
+[2025-08-28 17:48:17] Site Title: Портфолио
+[2025-08-28 17:48:17] Hero Title: Дизайнер
+[2025-08-28 17:48:17] About Text length: 0
+[2025-08-28 17:48:17] Подключение к БД OK
+[2025-08-28 17:48:17] Транзакция начата
+[2025-08-28 17:48:17] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-28 17:48:17] Параметры: experience_years=29, projects_count=100, clients_count=50
+[2025-08-28 17:51:49] === Начало обработки save_settings_fixed.php ===
+[2025-08-28 17:51:49] Метод: POST
+[2025-08-28 17:51:49] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","hero_subtitle":"\u0432\u0435\u0440\u0441\u0442\u043a\u0430 \u043a\u043d\u0438\u0433","about_text":"","experience_years":"29","projects_count":"100","clients_count":"50"}
+[2025-08-28 17:51:49] ID: 1
+[2025-08-28 17:51:49] Site Title: Портфолио
+[2025-08-28 17:51:49] Hero Title: Дизайнер
+[2025-08-28 17:51:49] About Text length: 0
+[2025-08-28 17:51:49] Подключение к БД OK
+[2025-08-28 17:51:49] Транзакция начата
+[2025-08-28 17:51:49] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-28 17:51:49] Параметры: experience_years=29, projects_count=100, clients_count=50
+[2025-08-28 17:55:21] === Начало обработки save_settings_fixed.php ===
+[2025-08-28 17:55:21] Метод: POST
+[2025-08-28 17:55:21] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","hero_subtitle":"\u0432\u0435\u0440\u0441\u0442\u043a\u0430 \u043a\u043d\u0438\u0433","about_text":"","experience_years":"29","projects_count":"100","clients_count":"50"}
+[2025-08-28 17:55:21] ID: 1
+[2025-08-28 17:55:21] Site Title: Портфолио
+[2025-08-28 17:55:21] Hero Title: Дизайнер
+[2025-08-28 17:55:21] About Text length: 0
+[2025-08-28 17:55:21] Подключение к БД OK
+[2025-08-28 17:55:21] Транзакция начата
+[2025-08-28 17:55:21] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-28 17:55:21] Параметры: experience_years=29, projects_count=100, clients_count=50
+[2025-08-28 17:56:04] === Начало обработки save_settings_fixed.php ===
+[2025-08-28 17:56:04] Метод: POST
+[2025-08-28 17:56:04] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","hero_subtitle":"\u0432\u0435\u0440\u0441\u0442\u043a\u0430 \u043a\u043d\u0438\u0433","about_text":"","experience_years":"29","projects_count":"100","clients_count":"50"}
+[2025-08-28 17:56:04] ID: 1
+[2025-08-28 17:56:04] Site Title: Портфолио
+[2025-08-28 17:56:04] Hero Title: Дизайнер
+[2025-08-28 17:56:04] About Text length: 0
+[2025-08-28 17:56:04] Подключение к БД OK
+[2025-08-28 17:56:04] Транзакция начата
+[2025-08-28 17:56:04] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-28 17:56:04] Параметры: experience_years=29, projects_count=100, clients_count=50
+[2025-08-28 18:00:37] === Начало обработки save_settings_fixed.php ===
+[2025-08-28 18:00:37] Метод: POST
+[2025-08-28 18:00:37] POST данные: {"site_title":"\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0441\u0430\u0439\u0442","hero_title":"\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0433\u0435\u0440\u043e\u0439","hero_subtitle":"\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u043f\u043e\u0434\u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a","about_text":"\u042d\u0442\u043e \u0442\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0442\u0435\u043a\u0441\u0442 \u0434\u043b\u044f \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u0438\u044f \u043f\u043e\u043b\u044f about_text. \u0421\u043e\u0437\u0434\u0430\u043d 2025-08-28 18:00:17","experience_years":"5","projects_count":"100","clients_count":"50","id":"1"}
+[2025-08-28 18:00:37] ID: 1
+[2025-08-28 18:00:37] Site Title: Тестовый сайт
+[2025-08-28 18:00:37] Hero Title: Тестовый герой
+[2025-08-28 18:00:37] About Text length: 133
+[2025-08-28 18:00:37] Подключение к БД OK
+[2025-08-28 18:00:37] Транзакция начата
+[2025-08-28 18:00:37] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-28 18:00:37] Параметры: experience_years=5, projects_count=100, clients_count=50
+[2025-08-28 18:12:11] DEBUG: === Начало обработки save_settings_debug.php ===
+[2025-08-28 18:12:11] DEBUG: Метод не POST: GET
+[2025-08-28 18:12:11] DEBUG: Фатальная ошибка: Only POST method allowed
+[2025-08-28 18:12:11] DEBUG: Ошибка ответа: {"success":false,"message":"Only POST method allowed"}
+[2025-08-28 18:12:11] DEBUG: === Завершение обработки save_settings_debug.php ===
+[2025-08-28 18:13:26] === Начало обработки save_settings_fixed.php ===
+[2025-08-28 18:13:26] Метод: POST
+[2025-08-28 18:13:26] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","hero_subtitle":"\u0432\u0435\u0440\u0441\u0442\u043a\u0430 \u043a\u043d\u0438\u0433","about_text":"","experience_years":"29","projects_count":"100","clients_count":"50"}
+[2025-08-28 18:13:26] ID: 1
+[2025-08-28 18:13:26] Site Title: Портфолио
+[2025-08-28 18:13:26] Hero Title: Дизайнер
+[2025-08-28 18:13:26] About Text length: 0
+[2025-08-28 18:13:26] Подключение к БД OK
+[2025-08-28 18:13:26] Транзакция начата
+[2025-08-28 18:13:26] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-28 18:13:26] Параметры: experience_years=29, projects_count=100, clients_count=50
+[2025-08-28 18:17:38] === Начало обработки save_settings_fixed.php ===
+[2025-08-28 18:17:38] Метод: POST
+[2025-08-28 18:17:38] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","hero_subtitle":"\u0432\u0435\u0440\u0441\u0442\u043a\u0430 \u043a\u043d\u0438\u0433","about_text":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","experience_years":"0","projects_count":"0","clients_count":"0"}
+[2025-08-28 18:17:38] ID: 1
+[2025-08-28 18:17:38] Site Title: Портфолио
+[2025-08-28 18:17:38] Hero Title: Дизайнер
+[2025-08-28 18:17:38] About Text length: 16
+[2025-08-28 18:17:38] Подключение к БД OK
+[2025-08-28 18:17:38] Транзакция начата
+[2025-08-28 18:17:38] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-28 18:17:38] Параметры: experience_years=0, projects_count=0, clients_count=0
+[2025-08-28 18:19:53] === Начало обработки save_settings_fixed.php ===
+[2025-08-28 18:19:53] Метод не POST: GET
+[2025-08-28 18:19:53] Фатальная ошибка: Only POST method allowed
+[2025-08-28 18:19:53] Ошибка ответа: {"success":false,"message":"Only POST method allowed"}
+[2025-08-28 18:19:53] === Завершение обработки ===
+[2025-08-28 18:21:47] === Начало обработки save_settings_fixed.php ===
+[2025-08-28 18:21:47] Метод: POST
+[2025-08-28 18:21:47] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","hero_subtitle":"\u0444\u0435\u0440\u0441\u0442\u043a\u0430 \u043a\u043d\u0438\u0433","about_text":"\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0442\u0435\u043a\u0441\u0442 \u0434\u043b\u044f \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0438","experience_years":"29","projects_count":"100","clients_count":"50"}
+[2025-08-28 18:21:47] ID: 1
+[2025-08-28 18:21:47] Site Title: Портфолио
+[2025-08-28 18:21:47] Hero Title: Дизайнер
+[2025-08-28 18:21:47] About Text length: 51
+[2025-08-28 18:21:47] Подключение к БД OK
+[2025-08-28 18:21:47] Транзакция начата
+[2025-08-28 18:21:47] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-28 18:21:47] Параметры: experience_years=29, projects_count=100, clients_count=50
+[2025-08-28 18:28:12] === Начало обработки save_settings_fixed.php ===
+[2025-08-28 18:28:12] Метод: POST
+[2025-08-28 18:28:12] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","hero_subtitle":"\u0444\u0435\u0440\u0441\u0442\u043a\u0430 \u043a\u043d\u0438\u0433","about_text":"\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0442\u0435\u043a\u0441\u0442 \u0434\u043b\u044f \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0438","experience_years":"29","projects_count":"100","clients_count":"50"}
+[2025-08-28 18:28:12] ID: 1
+[2025-08-28 18:28:12] Site Title: Портфолио
+[2025-08-28 18:28:12] Hero Title: Дизайнер
+[2025-08-28 18:28:12] About Text length: 51
+[2025-08-28 18:28:12] Подключение к БД OK
+[2025-08-28 18:28:12] Транзакция начата
+[2025-08-28 18:28:12] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-28 18:28:12] Параметры: experience_years=29, projects_count=100, clients_count=50
+[2025-08-28 18:44:05] === Начало обработки save_settings_fixed.php ===
+[2025-08-28 18:44:05] Метод: POST
+[2025-08-28 18:44:05] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","hero_subtitle":"\u0412\u0435\u0440\u0441\u0442\u043a\u0430 \u043a\u043d\u0438\u0433","about_text":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440 \u0441 \u0431\u043e\u043b\u044c\u0448\u0438\u043c \u043e\u043f\u044b\u0442\u043e\u043c","experience_years":"0","projects_count":"0","clients_count":"0"}
+[2025-08-28 18:44:05] ID: 1
+[2025-08-28 18:44:05] Site Title: Портфолио
+[2025-08-28 18:44:05] Hero Title: Дизайнер
+[2025-08-28 18:44:05] About Text length: 47
+[2025-08-28 18:44:05] Подключение к БД OK
+[2025-08-28 18:44:05] Транзакция начата
+[2025-08-28 18:44:05] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-28 18:44:05] Параметры: experience_years=0, projects_count=0, clients_count=0
+[2025-08-28 18:49:00] === Начало обработки save_settings_fixed.php ===
+[2025-08-28 18:49:00] Метод: POST
+[2025-08-28 18:49:00] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","hero_subtitle":"\u0412\u0435\u0440\u0442\u0441\u043a\u0430 \u043a\u043d\u0438\u0433","about_text":"\u0411\u043e\u043b\u044c\u0448\u043e\u0439 \u043e\u043f\u044b\u0442","experience_years":"0","projects_count":"0","clients_count":"0"}
+[2025-08-28 18:49:00] ID: 1
+[2025-08-28 18:49:00] Site Title: Портфолио
+[2025-08-28 18:49:00] Hero Title: Дизайнер
+[2025-08-28 18:49:00] About Text length: 23
+[2025-08-28 18:49:00] Подключение к БД OK
+[2025-08-28 18:49:00] Транзакция начата
+[2025-08-28 18:49:00] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-28 18:49:00] Параметры: experience_years=0, projects_count=0, clients_count=0
+[2025-08-28 18:53:10] === Начало обработки save_settings_fixed.php ===
+[2025-08-28 18:53:10] Метод: POST
+[2025-08-28 18:53:10] POST данные: {"site_title":"\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0441\u0430\u0439\u0442","hero_title":"\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0433\u0435\u0440\u043e\u0439","hero_subtitle":"\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u043f\u043e\u0434\u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a","about_text":"\u042d\u0442\u043e \u0442\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0442\u0435\u043a\u0441\u0442 \u0434\u043b\u044f \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u0438\u044f \u043f\u043e\u043b\u044f about_text. \u0421\u043e\u0437\u0434\u0430\u043d 2025-08-28 18:52:56","experience_years":"5","projects_count":"100","clients_count":"50","id":"1"}
+[2025-08-28 18:53:10] ID: 1
+[2025-08-28 18:53:10] Site Title: Тестовый сайт
+[2025-08-28 18:53:10] Hero Title: Тестовый герой
+[2025-08-28 18:53:10] About Text length: 133
+[2025-08-28 18:53:10] Подключение к БД OK
+[2025-08-28 18:53:10] Транзакция начата
+[2025-08-28 18:53:10] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-28 18:53:10] Параметры: experience_years=5, projects_count=100, clients_count=50
+[2025-08-28 19:14:45] === Начало обработки save_settings_fixed.php ===
+[2025-08-28 19:14:45] Метод: POST
+[2025-08-28 19:14:45] POST данные: {"id":"1","site_title":"\u041f\u043e\u0440\u0442\u0444\u043e\u043b\u0438\u043e","hero_title":"\u0414\u0438\u0437\u0430\u0439\u043d\u0435\u0440","hero_subtitle":"\u0432\u0435\u0440\u0441\u0442\u043a\u0430 \u043a\u043d\u0438\u0433","about_text":"\u0431\u043e\u043b\u044c\u0448\u043e\u0439 \u043e\u043f\u044b\u0442","experience_years":"0","projects_count":"0","clients_count":"0"}
+[2025-08-28 19:14:45] ID: 1
+[2025-08-28 19:14:45] Site Title: Портфолио
+[2025-08-28 19:14:45] Hero Title: Дизайнер
+[2025-08-28 19:14:45] About Text length: 23
+[2025-08-28 19:14:45] Подключение к БД OK
+[2025-08-28 19:14:45] Транзакция начата
+[2025-08-28 19:14:45] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-28 19:14:45] Параметры: experience_years=0, projects_count=0, clients_count=0
+[2025-08-28 19:18:16] === Начало обработки save_settings_fixed.php ===
+[2025-08-28 19:18:16] Метод: POST
+[2025-08-28 19:18:16] POST данные: {"id":"1","site_title":"\u0444","hero_title":"\u0444","hero_subtitle":"\u0444","about_text":"\u0444","experience_years":"0","projects_count":"0","clients_count":"0"}
+[2025-08-28 19:18:16] ID: 1
+[2025-08-28 19:18:16] Site Title: ф
+[2025-08-28 19:18:16] Hero Title: ф
+[2025-08-28 19:18:16] About Text length: 2
+[2025-08-28 19:18:16] Подключение к БД OK
+[2025-08-28 19:18:16] Транзакция начата
+[2025-08-28 19:18:16] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-28 19:18:16] Параметры: experience_years=0, projects_count=0, clients_count=0
+[2025-08-28 19:21:44] === Начало обработки save_settings_fixed.php ===
+[2025-08-28 19:21:44] Метод: POST
+[2025-08-28 19:21:44] POST данные: {"site_title":"\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0441\u0430\u0439\u0442","about_text":"\u042d\u0442\u043e \u0442\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0442\u0435\u043a\u0441\u0442 \u0434\u043b\u044f \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0438 \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u0438\u044f \u043f\u043e\u043b\u044f about_text. \u0421\u043e\u0437\u0434\u0430\u043d 2025-08-28 19:21:39","id":"1","hero_title":"\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u0433\u0435\u0440\u043e\u0439","hero_subtitle":"\u0422\u0435\u0441\u0442\u043e\u0432\u044b\u0439 \u043f\u043e\u0434\u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043e\u043a","experience_years":"5","projects_count":"100","clients_count":"50"}
+[2025-08-28 19:21:44] ID: 1
+[2025-08-28 19:21:44] Site Title: Тестовый сайт
+[2025-08-28 19:21:44] Hero Title: Тестовый герой
+[2025-08-28 19:21:44] About Text length: 133
+[2025-08-28 19:21:44] Подключение к БД OK
+[2025-08-28 19:21:44] Транзакция начата
+[2025-08-28 19:21:44] SQL: UPDATE settings SET 
+            site_title = ?, 
+            hero_title = ?, 
+            hero_subtitle = ?,
+            about_text = ?,
+            avatar = ?,
+            primary_color = ?,
+            secondary_color = ?,
+            accent_color = ?,
+            text_color = ?,
+            bg_color = ?,
+            font_family = ?,
+            bg_image = ?,
+            experience_years = ?,
+            projects_count = ?,
+            clients_count = ?
+            WHERE id = ?
+[2025-08-28 19:21:44] Параметры: experience_years=5, projects_count=100, clients_count=50
