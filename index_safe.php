@@ -1,30 +1,50 @@
 <?php
 session_start();
-require_once 'config.php';
 
-// Получаем данные из БД
-$projects_result = $conn->query("SELECT * FROM projects ORDER BY created_at DESC");
-$projects = $projects_result->fetch_all(MYSQLI_ASSOC);
+// Безопасное подключение к базе данных
+try {
+    require_once 'config.php';
+    
+    // Проверяем, установлено ли соединение
+    if (!isset($conn) || $conn->connect_error) {
+        $db_error = isset($conn) ? $conn->connect_error : "Соединение не установлено";
+        $db_connected = false;
+    } else {
+        $db_connected = true;
+        
+        // Получаем данные из БД только если соединение установлено
+        $projects_result = $conn->query("SELECT * FROM projects ORDER BY created_at DESC");
+        $projects = $projects_result ? $projects_result->fetch_all(MYSQLI_ASSOC) : [];
 
-$skills_result = $conn->query("SELECT * FROM skills");
-$skills = $skills_result->fetch_all(MYSQLI_ASSOC);
+        $skills_result = $conn->query("SELECT * FROM skills");
+        $skills = $skills_result ? $skills_result->fetch_all(MYSQLI_ASSOC) : [];
 
-$contact_result = $conn->query("SELECT * FROM contact LIMIT 1");
-$contact = $contact_result->fetch_assoc();
+        $contact_result = $conn->query("SELECT * FROM contact LIMIT 1");
+        $contact = $contact_result ? $contact_result->fetch_assoc() : [];
 
-// Получаем персональную информацию
-$personal_info_result = $conn->query("SELECT * FROM personal_info LIMIT 1");
-$personal_info = $personal_info_result->fetch_assoc();
+        // Получаем персональную информацию
+        $personal_info_result = $conn->query("SELECT * FROM personal_info LIMIT 1");
+        $personal_info = $personal_info_result ? $personal_info_result->fetch_assoc() : [];
 
-// Получаем активную тему
-$theme_result = $conn->query("SELECT * FROM themes WHERE is_active = 1 LIMIT 1");
-$theme = $theme_result->fetch_assoc();
+        // Получаем активную тему
+        $theme_result = $conn->query("SELECT * FROM themes WHERE is_active = 1 LIMIT 1");
+        $theme = $theme_result ? $theme_result->fetch_assoc() : [];
 
-// Если нет активной темы, используем настройки по умолчанию
-if (!$theme) {
-    $settings_result = $conn->query("SELECT * FROM settings LIMIT 1");
-    $settings = $settings_result->fetch_assoc();
-    $theme = $settings;
+        // Если нет активной темы, используем настройки по умолчанию
+        if (!$theme) {
+            $settings_result = $conn->query("SELECT * FROM settings LIMIT 1");
+            $settings = $settings_result ? $settings_result->fetch_assoc() : [];
+            $theme = $settings;
+        }
+    }
+} catch (Exception $e) {
+    $db_error = $e->getMessage();
+    $db_connected = false;
+    $projects = [];
+    $skills = [];
+    $contact = [];
+    $personal_info = [];
+    $theme = [];
 }
 
 // Если нет персональной информации, используем значения по умолчанию
@@ -53,6 +73,21 @@ if (!$personal_info) {
     $personal_info['websites'] = json_decode(isset($personal_info['websites']) ? $personal_info['websites'] : '[]', true);
 }
 
+// Если нет темы, используем значения по умолчанию
+if (!$theme) {
+    $theme = [
+        'site_title' => 'Портфолио',
+        'primary_color' => '#007bff',
+        'secondary_color' => '#6c757d',
+        'accent_color' => '#28a745',
+        'text_color' => '#333333',
+        'bg_color' => '#ffffff',
+        'font_family' => 'Arial',
+        'bg_image' => '',
+        'slug' => ''
+    ];
+}
+
 // Функция для определения активной страницы
 function getActivePage() {
     $current_file = basename($_SERVER['PHP_SELF']);
@@ -67,7 +102,21 @@ function getActivePage() {
 
 $active_page = getActivePage();
 
-// Функция hex2rgb() уже объявлена в config.php
+// Функция для преобразования HEX в RGB
+function hex2rgb($hex) {
+    $hex = str_replace("#", "", $hex);
+    if (strlen($hex) == 3) {
+        $r = hexdec(substr($hex, 0, 1) . substr($hex, 0, 1));
+        $g = hexdec(substr($hex, 1, 1) . substr($hex, 1, 1));
+        $b = hexdec(substr($hex, 2, 1) . substr($hex, 2, 1));
+    } else {
+        $r = hexdec(substr($hex, 0, 2));
+        $g = hexdec(substr($hex, 2, 2));
+        $b = hexdec(substr($hex, 4, 2));
+    }
+    $rgb = "$r, $g, $b";
+    return $rgb;
+}
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -79,7 +128,6 @@ $active_page = getActivePage();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=<?php echo urlencode($theme['font_family']); ?>&display=swap" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
-    <link href="assets/css/social-links-images.css" rel="stylesheet">
     
     <!-- Динамическая загрузка CSS темы -->
     <?php if (!empty($theme['slug'])): ?>
@@ -155,6 +203,18 @@ $active_page = getActivePage();
                 </div>
             </div>
         </nav>
+
+        <!-- Сообщение об ошибке базы данных -->
+        <?php if (!$db_connected): ?>
+        <div class="container mt-5">
+            <div class="alert alert-warning">
+                <h4><i class="fas fa-exclamation-triangle me-2"></i>Внимание</h4>
+                <p>Не удалось подключиться к базе данных: <?php echo htmlspecialchars($db_error); ?></p>
+                <p>Сайт работает в ограниченном режиме. Пожалуйста, попробуйте обновить базу данных.</p>
+                <a href="update_database.php" class="btn btn-warning">Обновить базу данных</a>
+            </div>
+        </div>
+        <?php endif; ?>
 
         <!-- Hero секция с космической темой -->
         <section id="hero" class="hero-section">
@@ -302,48 +362,63 @@ $active_page = getActivePage();
                         </div>
                     <?php endforeach; ?>
                 </div>
-                <div class="text-center mt-4">
-                    <a href="profile.php" class="btn btn-primary">Все навыки</a>
+                <?php if (empty($skills)): ?>
+                <div class="text-center">
+                    <p class="text-muted">Навыки暂时 не доступны из-за проблемы с базой данных</p>
                 </div>
+                <?php endif; ?>
             </div>
         </section>
 
-        <!-- Последние проекты -->
-        <section id="recent-projects" class="py-5 bg-light">
+        <!-- Контакты (краткая версия) -->
+        <section id="contact" class="py-5 bg-light">
             <div class="container">
-                <h2 class="text-center mb-5">Последние проекты</h2>
+                <h2 class="text-center mb-5">Контакты</h2>
                 <div class="row">
-                    <?php 
-                    // Показываем только последние 3 проекта на главной странице
-                    $recent_projects = array_slice($projects, 0, 3);
-                    foreach ($recent_projects as $project): 
-                    ?>
-                        <div class="col-md-6 col-lg-4 mb-4">
-                            <div class="portfolio-card">
-                                <img src="<?php echo htmlspecialchars($project['image']); ?>" alt="<?php echo htmlspecialchars($project['title']); ?>">
-                                <div class="portfolio-overlay">
-                                    <h5><?php echo htmlspecialchars($project['title']); ?></h5>
-                                    <p><?php echo htmlspecialchars($project['description']); ?></p>
-                                    <a href="<?php echo htmlspecialchars($project['link']); ?>" class="btn btn-primary">Подробнее</a>
-                                </div>
+                    <div class="col-lg-8 mx-auto">
+                        <div class="contact-info text-center">
+                            <?php if (!empty($contact['email'])): ?>
+                            <p><i class="fas fa-envelope me-2"></i><?php echo htmlspecialchars($contact['email']); ?></p>
+                            <?php endif; ?>
+                            <?php if (!empty($contact['phone'])): ?>
+                            <p><i class="fas fa-phone me-2"></i><?php echo htmlspecialchars($contact['phone']); ?></p>
+                            <?php endif; ?>
+                            <?php if (!empty($contact['address'])): ?>
+                            <p><i class="fas fa-map-marker-alt me-2"></i><?php echo htmlspecialchars($contact['address']); ?></p>
+                            <?php endif; ?>
+                            <div class="social-links mt-4">
+                                <?php if (!empty($personal_info['social_links']) && is_array($personal_info['social_links'])): ?>
+                                    <?php foreach ($personal_info['social_links'] as $platform => $url): ?>
+                                        <?php if (!empty($url)): ?>
+                                        <a href="<?php echo htmlspecialchars($url); ?>" target="_blank" class="social-link">
+                                            <i class="fab fa-<?php echo htmlspecialchars($platform); ?> fa-2x"></i>
+                                        </a>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </div>
                         </div>
-                    <?php endforeach; ?>
-                </div>
-                <div class="text-center mt-4">
-                    <a href="portfolio.php" class="btn btn-primary">Все проекты</a>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Футер -->
         <footer class="bg-dark text-white py-4">
-            <div class="container text-center">
-                <p>© <?php echo date('Y'); ?> <?php echo htmlspecialchars($theme['site_title'] ?? 'Портфолио'); ?>. Все права защищены.</p>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>&copy; <?php echo date('Y'); ?> <?php echo htmlspecialchars($theme['site_title'] ?? 'Портфолио'); ?>. Все права защищены.</p>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <p>Создано с <i class="fas fa-heart text-danger"></i> с помощью PHP и Bootstrap</p>
+                    </div>
+                </div>
             </div>
         </footer>
     </div>
 
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/script.js"></script>
 </body>
