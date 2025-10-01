@@ -1,0 +1,174 @@
+/* 
+ * Social Links Horizontal Layout Fix
+ * This file overrides all styles to ensure social links display horizontally
+ */
+
+.social-links-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 1rem !important;
+    justify-content: center !important;
+    width: 100% !important;
+    flex-direction: row !important;
+    align-items: center !important; /* Выравнивание по центру */
+    align-content: flex-start !important;
+}
+
+.social-link-item {
+    background: transparent !important; /* Убираем фон */
+    padding: 0.5rem !important; /* Уменьшаем отступы */
+    border-radius: 0 !important; /* Убираем скругление */
+    box-shadow: none !important; /* Убираем тень */
+    transition: all 0.3s ease !important;
+    border: none !important; /* Убираем рамку */
+    text-align: center !important;
+    min-width: auto !important; /* Убираем минимальную ширину */
+    flex: 0 1 auto !important;
+    display: inline-flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important; /* Выравнивание по центру */
+    margin: 0 !important;
+    height: auto !important; /* Автоматическая высота */
+}
+
+.social-link {
+    color: #3498db !important;
+    text-decoration: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important; /* Выравнивание по центру */
+    gap: 0.25rem !important;
+    transition: all 0.3s ease !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.social-link:hover {
+    color: #e74c3c !important;
+}
+
+/* Стили для иконок - восстанавливаем нормальное отображение */
+.social-link i {
+    font-size: 1.5rem !important;
+    transition: all 0.3s ease !important;
+    margin-bottom: 0.25rem !important;
+    display: block !important; /* Обязательно показываем иконки */
+}
+
+.social-link:hover i {
+    transform: scale(1.1) !important;
+}
+
+/* Стили для текста */
+.social-link span {
+    font-weight: 500 !important;
+    font-size: 0.85rem !important;
+    text-align: center !important;
+    line-height: 1.2 !important;
+}
+
+/* Восстанавливаем Font Awesome иконки для всех платформ */
+.social-link i::before {
+    font-family: 'Font Awesome 6 Brands' !important;
+    font-weight: 400 !important;
+    content: normal !important; /* Позволяем отображать оригинальные иконки */
+}
+
+/* Используем фоновые изображения для Tenchat и Ok */
+.social-link i.fa-tenchat {
+    background-image: url('../img/social/tenchat-logo.png') !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    width: 24px !important;
+    height: 24px !important;
+    display: inline-block !important;
+}
+
+.social-link i.fa-tenchat::before {
+    content: '' !important;
+    display: none !important;
+}
+
+.social-link i.fa-ok {
+    background-image: url('../img/social/ok-logo.png') !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    width: 24px !important;
+    height: 24px !important;
+    display: inline-block !important;
+}
+
+.social-link i.fa-ok::before {
+    content: '' !important;
+    display: none !important;
+}
+
+/* Запасной вариант, если изображения не загрузятся */
+.social-link i.fa-tenchat:not([style*="background-image"])::before,
+.social-link i.fa-ok:not([style*="background-image"])::before {
+    font-family: Arial, sans-serif !important;
+    font-size: 1rem !important;
+    font-weight: bold !important;
+    color: #3498db !important;
+    display: inline-block !important;
+}
+
+.social-link i.fa-tenchat:not([style*="background-image"])::before {
+    content: 'TC' !important;
+}
+
+.social-link i.fa-ok:not([style*="background-image"])::before {
+    content: 'OK' !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .social-links-grid {
+        gap: 0.75rem !important;
+    }
+    
+    .social-link-item {
+        padding: 0.4rem !important;
+    }
+    
+    .social-link i {
+        font-size: 1.3rem !important;
+    }
+    
+    .social-link span {
+        font-size: 0.8rem !important;
+    }
+    
+    .social-link i.fa-tenchat::before,
+    .social-link i.fa-ok::before {
+        font-size: 0.9rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .social-links-grid {
+        gap: 0.5rem !important;
+        justify-content: center !important;
+    }
+    
+    .social-link-item {
+        padding: 0.3rem !important;
+    }
+    
+    .social-link i {
+        font-size: 1.1rem !important;
+    }
+    
+    .social-link span {
+        font-size: 0.7rem !important;
+    }
+    
+    .social-link i.fa-tenchat::before,
+    .social-link i.fa-ok::before {
+        font-size: 0.8rem !important;
+    }
+}

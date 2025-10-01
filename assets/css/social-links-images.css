@@ -1,0 +1,187 @@
+/* 
+ * Social Links with Images Fix
+ * This file uses background images for all social media icons
+ */
+
+.social-links-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 1rem !important;
+    justify-content: center !important;
+    width: 100% !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    align-content: flex-start !important;
+}
+
+.social-link-item {
+    background: transparent !important;
+    padding: 0.5rem !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    transition: all 0.3s ease !important;
+    border: none !important;
+    text-align: center !important;
+    min-width: auto !important;
+    flex: 0 1 auto !important;
+    display: inline-flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    height: auto !important;
+}
+
+.social-link {
+    color: #3498db !important;
+    text-decoration: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.25rem !important;
+    transition: all 0.3s ease !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.social-link:hover {
+    color: #e74c3c !important;
+}
+
+/* Используем фоновые изображения для всех социальных сетей */
+.social-link i {
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: inline-block !important;
+    margin-bottom: 0.25rem !important;
+    transition: all 0.3s ease !important;
+}
+
+.social-link i::before {
+    content: '' !important;
+    display: none !important;
+}
+
+/* Логотипы для всех социальных сетей */
+.social-link i.fa-facebook {
+    background-image: url('../img/social/facebook-logo.png') !important;
+}
+
+.social-link i.fa-twitter {
+    background-image: url('../img/social/twitter-logo.png') !important;
+}
+
+.social-link i.fa-instagram {
+    background-image: url('../img/social/instagram-logo.png') !important;
+}
+
+.social-link i.fa-linkedin {
+    background-image: url('../img/social/linkedin-logo.png') !important;
+}
+
+.social-link i.fa-github {
+    background-image: url('../img/social/github-logo.png') !important;
+}
+
+.social-link i.fa-youtube {
+    background-image: url('../img/social/youtube-logo.png') !important;
+}
+
+.social-link i.fa-telegram {
+    background-image: url('../img/social/telegram-logo.png') !important;
+}
+
+.social-link i.fa-vk {
+    background-image: url('../img/social/vk-logo.png') !important;
+}
+
+.social-link i.fa-tenchat {
+    background-image: url('../img/social/tenchat-logo.png') !important;
+}
+
+.social-link i.fa-ok {
+    background-image: url('../img/social/ok-logo.png') !important;
+}
+
+/* Эффект при наведении */
+.social-link:hover i {
+    transform: scale(1.1) !important;
+}
+
+/* Стили для текста */
+.social-link span {
+    font-weight: 500 !important;
+    font-size: 0.85rem !important;
+    text-align: center !important;
+    line-height: 1.2 !important;
+}
+
+/* Запасной вариант, если изображения не загрузятся - используем Font Awesome */
+.social-link i:not([style*="background-image"])::before {
+    font-family: 'Font Awesome 6 Brands' !important;
+    font-weight: 400 !important;
+    content: normal !important;
+    display: block !important;
+    background: none !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+/* Запасной вариант для Tenchat и Ok */
+.social-link i.fa-tenchat:not([style*="background-image"])::before {
+    content: 'TC' !important;
+    font-family: Arial, sans-serif !important;
+    font-weight: bold !important;
+    color: #3498db !important;
+}
+
+.social-link i.fa-ok:not([style*="background-image"])::before {
+    content: 'OK' !important;
+    font-family: Arial, sans-serif !important;
+    font-weight: bold !important;
+    color: #3498db !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .social-links-grid {
+        gap: 0.75rem !important;
+    }
+    
+    .social-link-item {
+        padding: 0.4rem !important;
+    }
+    
+    .social-link i {
+        width: 28px !important;
+        height: 28px !important;
+    }
+    
+    .social-link span {
+        font-size: 0.8rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .social-links-grid {
+        gap: 0.5rem !important;
+        justify-content: center !important;
+    }
+    
+    .social-link-item {
+        padding: 0.3rem !important;
+    }
+    
+    .social-link i {
+        width: 24px !important;
+        height: 24px !important;
+    }
+    
+    .social-link span {
+        font-size: 0.7rem !important;
+    }
+}
