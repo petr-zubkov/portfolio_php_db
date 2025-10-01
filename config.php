@@ -7,12 +7,15 @@ define('DB_NAME', 'u188825_portfolio_db');
 // Подключение к базе данных
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
+// Не прерываем выполнение при ошибке подключения, просто устанавливаем флаг
 if ($conn->connect_error) {
-    die("Ошибка подключения: " . $conn->connect_error);
+    $db_connected = false;
+    $db_error = $conn->connect_error;
+} else {
+    $db_connected = true;
+    // Установка кодировки
+    $conn->set_charset("utf8");
 }
-
-// Установка кодировки
-$conn->set_charset("utf8");
 
 // Путь для загрузки изображений
 define('UPLOAD_PATH', __DIR__ . '/uploads/');
